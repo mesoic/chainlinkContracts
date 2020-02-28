@@ -1,0 +1,7 @@
+# node.js modules
+node_modules/
+build/
+
+# Security
+.config.json
+package-lock.json
