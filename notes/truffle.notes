@@ -20,7 +20,7 @@ in this repository.
 	|		makepkg
 	|		sudo pacman -U truffle-5.0.31-1-any.pkg.tar.xz 
 
-2: truffle: working with metacoin example
+2) truffle: working with metacoin example
 	
 	a) unbox metacoin
 	| 

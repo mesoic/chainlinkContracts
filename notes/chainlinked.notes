@@ -1,0 +1,16 @@
+Notes for creating and working with chainlinked smart contracts (consumer contracts)
+for unit testing chainlink node operation 
+
+0: 	Install dependencies
+	| sudo pacman install nodejs
+	| sudo pacman install npm 
+	|
+	| Install truffle from AUR:
+	| 	git clone https://aur.archlinux.org/truffle.git
+	|	makepkg
+	|	sudo pacman -U truffle-5.0.31-1-any.pkg.tar.xz 
+
+1: 	Unbox smartcontractkit and add chainlink (slow)
+	| truffle unbox smartcontractkit/chainlink
+	| npm install chainlink --save
+
