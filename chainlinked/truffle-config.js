@@ -21,18 +21,16 @@ try {
     
       ropsten: {
         provider: new HDWalletProvider(config.ROPSTEN_HD_MNEMONIC, config.ROPSTEN_EAAS + config.ROPSTEN_API_KEY, config.ROPSTEN_HD_INDEX),
-        network_id: 3,
-        gas: 4000000      //make sure this gas allocation isn't over 4M, which is the max
-      },
-
-      mainnet: {
-        provider: new HDWalletProvider(config.MAINNET_HD_MNEMONIC, config.MAINNET_EAAS + config.MAINNET_API_KEY, config.MAINNET_HD_INDEX),
-        network_id: 1,
+        network_id: "*",
+        skipDryRun: true,
         gas: 4000000      //make sure this gas allocation isn't over 4M, which is the max
       }
-
-    }
-
+    },
+    compilers: {
+      solc: {
+          version: '0.5.0',
+        },
+     }
   }
 } catch(err) {
   console.log(err)
