@@ -2,13 +2,13 @@
 const fs = require('fs')
 
 // For HD wallet generation
-var HDWalletProvider = require("@truffle/hdwallet-provider");
+const HDWalletProvider = require("@truffle/hdwallet-provider");
 
 // Load data into variables
 try {
   const jsonString = fs.readFileSync(".config.json")
   const config = JSON.parse(jsonString)
-
+  
   // Export modules
   module.exports = {
     networks: {

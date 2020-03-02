@@ -5,3 +5,6 @@ build/
 # Security
 .config.json
 package-lock.json
+
+# Utilities directory
+linkutils/

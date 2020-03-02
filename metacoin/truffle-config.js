@@ -2,7 +2,7 @@
 const fs = require('fs')
 
 // For HD wallet generation
-var HDWalletProvider = require("@truffle/hdwallet-provider");
+const HDWalletProvider = require("@truffle/hdwallet-provider");
 
 // Load data into variables
 try {
@@ -30,7 +30,6 @@ try {
         network_id: 1,
         gas: 4000000      //make sure this gas allocation isn't over 4M, which is the max
       }
-
     }
 
   }

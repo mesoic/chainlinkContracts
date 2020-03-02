@@ -20,7 +20,8 @@
     "@chainlink/contracts": "^0.0.1",
     "@chainlink/test-helpers": "0.0.2",
     "chainlink": "^0.8.2",
-    "openzeppelin-solidity": "1.12.0"
+    "openzeppelin-solidity": "1.12.0",
+    "truffle-keystore-provider": "^1.0.4"
   },
   "devDependencies": {
     "@chainlink/belt": "^0.0.1",
