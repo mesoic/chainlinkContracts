@@ -1,6 +1,3 @@
-# Sensitive files
-chainlinked/scripts/requests/oracle-request-url.json
-
 # node.js modules
 node_modules/
 build/

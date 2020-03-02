@@ -66,7 +66,7 @@ for unit testing chainlink node operation
 	our preferred truffle-config.js
 	|
 	|	"migrate:ganache": "npx truffle migrate --reset --network ganache",
-	|	"migrate:ropsten": "npx truffle migrate --reset --network ropsten",
+	|	"migrate:ropsten": "npx truffle migrate --network ropsten",
 	|	"migrate:mainnet": "npx truffle migrate --network mainnet",
 	|
 	|	run migration to ganache to test:
@@ -247,3 +247,30 @@ for unit testing chainlink node operation
     |		const token = await LinkToken.at(tokenAddress)
   	|
   	
+  	e) Note that it is generally not necessary to reset the migration. 
+	|
+	|	re-deploys everything:
+	|		npx truffle migrate --network --reset ropsten
+	|
+	|	re-deploys updated:
+	|		npx truffle migrate --network ropsten
+
+6)  Deployements: Note the contract addresses:
+	|
+	|	Migrations 		: 0xDd11F7Df86e9956ab78568Df145ae448eA1E3f8f
+	|
+	|	ethUint256		: 0x513F9E2a060401C64a01Cc4B2Bc2f01718224879
+	|	requests 		:
+	|		npx truffle exec scripts/ethUint256/request-ethUint256.js --network ropsten
+	|		npx truffle exec scripts/ethUint256/read-ethUint256.js --network ropsten
+	|
+	|	externalAdapter	: 0xb4302F5bFf79fEbe8e75a8fcB1A62C640A798271
+	|	requests 		:
+	|		npx truffle exec scripts/externalAdapter/request-externalAdapter.js --network ropsten
+	|		npx truffle exec scripts/externalAdapter/read-externalAdapter.js --network ropsten
+	|
+	|	Summary (excluding migrations)
+	|	=======
+	|	> Total deployments:   2
+	|	> Final cost:          0.05702706 ETH
+	|

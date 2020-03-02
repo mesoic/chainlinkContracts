@@ -1,8 +1,9 @@
 // File system for configuration
 const fs = require('fs')
+const fs_path = require("path");
 
 // Load contract instance
-const MyContract = artifacts.require('MyContract')
+const contract = artifacts.require('ethUint256')
 
 /*
   This script allows for a Chainlink request to be created from
@@ -13,12 +14,12 @@ const MyContract = artifacts.require('MyContract')
 try {
 
   // Load data from request object
-  const jsonString = fs.readFileSync("./requests/oracle-request-url.json")
+  const jsonString = fs.readFileSync( fs_path.resolve(__dirname, "./requests/oracle-ethUint256.json") )
   const config = JSON.parse(jsonString)
 
   // Build request callback
   module.exports = async callback => {
-    const mc = await MyContract.deployed()
+    const mc = await contract.deployed()
     console.log('Creating request on contract:', mc.address)
     const tx = await mc.createRequestTo(
       config.oracleAddress,

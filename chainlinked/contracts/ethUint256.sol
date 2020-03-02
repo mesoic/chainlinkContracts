@@ -10,7 +10,7 @@ import "@chainlink/contracts/src/v0.5/vendor/Ownable.sol";
  * @dev This contract is designed to work on multiple networks, including
  * local test networks
  */
-contract MyContract is ChainlinkClient, Ownable {
+contract ethUint256 is ChainlinkClient, Ownable {
   uint256 public data;
 
   /**
