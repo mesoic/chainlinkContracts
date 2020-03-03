@@ -5,6 +5,7 @@ const fs_path = require("path");
 // Load contract instance
 const contract = artifacts.require('ethUint256')
 
+
 /*
   This script allows for a Chainlink request to be created from
   the requesting contract. Defaults to the Chainlink oracle address
@@ -21,7 +22,7 @@ try {
   module.exports = async callback => {
     const mc = await contract.deployed()
     console.log('Creating request on contract:', mc.address)
-    const tx = await mc.createRequestTo(
+    let tx = await mc.createRequestTo(
       config.oracleAddress,
       web3.utils.toHex(config.jobId),
       config.payment,
