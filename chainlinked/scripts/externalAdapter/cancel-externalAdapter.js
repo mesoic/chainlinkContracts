@@ -20,9 +20,14 @@ const { expectRevert, time } = require('openzeppelin-test-helpers')
 
 try {
 
+  // log request path
+  const request_json = "0xc213a38d6439958431030f44b3e696d8c24d33a058eca7c55d9cda6cd771971f"
+
   // Load data from request object
-  const jsonString = fs.readFileSync( fs_path.resolve(__dirname, "./jobs/oracle-cryptoCompare-LINKUSD.json") )
-  const config = JSON.parse(jsonString)
+  const jsonString = fs.readFileSync( fs_path.resolve(__dirname, "./requests/" + request_json + ".json"))
+  const request = JSON.parse(jsonString)
+
+  console.log(request)
 
   // Note that err is the turffle error handler function which is passed as 
   // an argument to the asynchronous code we write. We can access the source
@@ -33,23 +38,17 @@ try {
     const mc = await contract.deployed()
 
     // call createRequestTo (do the transaction)
-    console.log('Creating request on contract:', mc.address)
-    const tx = await mc.createRequestTo(
-      config.oracleAddress,
-      web3.utils.toHex(config.jobId),
-      config.payment
+    console.log('Cancelling request on contract:', mc.address)
+    const tx = await mc.cancelRequest(
+      request.requestId,
+      request.payment,
+      request.callbackFunc,
+      request.expiration
     )
-      
-    // Get request object from tx.reciept
-    var request = oracle.decodeRunRequest(tx.receipt.rawLogs[3])
-
+     
     // print the transaction hash
     console.log("txHash: " + tx.tx)
-    console.log(request)
-
-    // Save the request object into a datafile
-    fs.writeFileSync(fs_path.resolve(__dirname, "./requests/" + request.requestId + ".json"), JSON.stringify(request, null, 2))
-
+  
     // call error callback on empty string .
     // This will terminate truffle processes.
     truffle_err(tx.tx)
