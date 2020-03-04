@@ -43,9 +43,11 @@ try {
       
     // Get request object from tx.reciept
     var request = oracle.decodeRunRequest(tx.receipt.rawLogs[3])
+    
+    // Add transaction hash to request object
+    request.txHash = tx.tx
 
-    // print the transaction hash
-    console.log("txHash: " + tx.tx)
+    // Print out request object    
     console.log(request)
 
     // Save the request object into a datafile
