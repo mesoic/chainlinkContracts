@@ -22,6 +22,7 @@ try {
 
   // Load data from request object
   const jsonString = fs.readFileSync( fs_path.resolve(__dirname, "./jobs/oracle-cryptoCompare-LINKUSD.json") )
+  //const jsonString = fs.readFileSync( fs_path.resolve(__dirname, "./jobs/oracle-failing.json") )
   const config = JSON.parse(jsonString)
 
   // Note that err is the turffle error handler function which is passed as 

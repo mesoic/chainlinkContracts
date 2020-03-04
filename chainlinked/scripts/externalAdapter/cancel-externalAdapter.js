@@ -21,10 +21,10 @@ const { expectRevert, time } = require('openzeppelin-test-helpers')
 try {
 
   // log request path
-  const request_json = "0xc213a38d6439958431030f44b3e696d8c24d33a058eca7c55d9cda6cd771971f"
+  const requestId = "0xaed2196c045a000c446053645f0cb586d1aee975a4a8f3481b4489c2668b2351"
 
   // Load data from request object
-  const jsonString = fs.readFileSync( fs_path.resolve(__dirname, "./requests/" + request_json + ".json"))
+  const jsonString = fs.readFileSync( fs_path.resolve(__dirname, "./requests/" + requestId + ".json"))
   const request = JSON.parse(jsonString)
 
   console.log(request)
