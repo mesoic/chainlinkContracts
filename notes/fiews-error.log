@@ -1,0 +1,239 @@
+Oracle Contract for Sigil.Link
+	0x5471030a14ea46a32f065ac226516723b429ec2b	
+
+Transaction to consumer contract:
+	https://ropsten.etherscan.io/tx/0x3a33ac242aa9db26be39637754b3427f4f528f1ac4bdc097f9597cecb7e54c65
+
+Fulfillment by node:
+	https://ropsten.etherscan.io/tx/0x13e9c4a4a3c89a1275e386add7b3d49c4f26e162227c9f184eb1337e4d2fd698
+
+Errored job in CL-explorer
+  https://ropsten.explorer.chain.link/job-runs/5a086559-7d43-44d2-82e2-c028883e2de6
+
+JSON tab of fulfilled job request that appears as failure:
+{
+  "id": "af4ff8500a254628b13783430f5dd342",
+  "jobId": "1060a4c63b62495b959968863553bd37",
+  "result": {
+    "data": {
+    },
+    "error": "BumpGasUntilSafe FindTxByAttempt: record not found"
+  },
+  "status": "errored",
+  "taskRuns": [
+    {
+      "id": "76213217722a4d7891a3d87077177a83",
+      "result": {
+        "data": {
+          "USD": 4.569,
+          "address": "0x5471030A14ea46A32F065ac226516723B429Ec2B",
+          "dataPrefix": "0xc213a38d6439958431030f44b3e696d8c24d33a058eca7c55d9cda6cd771971f000000000000000000000000000000000000000000000000016345785d8a0000000000000000000000000000b4302f5bff79febe8e75a8fcb1a62c640a7982714357855e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005e5ef20b",
+          "endpoint": "price",
+          "fsym": "LINK",
+          "functionSelector": "0x4ab0d190",
+          "result": 4.569,
+          "tsyms": "USD"
+        },
+        "error": null
+      },
+      "status": "completed",
+      "task": {
+        "ID": 94,
+        "CreatedAt": "2020-02-26T00:57:01.040104Z",
+        "UpdatedAt": "2020-02-26T00:57:01.040104Z",
+        "DeletedAt": null,
+        "type": "cryptocompare-ea",
+        "confirmations": null,
+        "params": {
+          "endpoint": "price",
+          "fsym": "LINK",
+          "tsyms": "USD"
+        }
+      },
+      "minimumConfirmations": 3,
+      "confirmations": 3
+    },
+    {
+      "id": "b48649edfeda40f99c8225a0944d1024",
+      "result": {
+        "data": {
+          "result": 4.569
+        },
+        "error": null
+      },
+      "status": "completed",
+      "task": {
+        "ID": 95,
+        "CreatedAt": "2020-02-26T00:57:01.045129Z",
+        "UpdatedAt": "2020-02-26T00:57:01.045129Z",
+        "DeletedAt": null,
+        "type": "copy",
+        "confirmations": null,
+        "params": {
+          "copyPath": "USD"
+        }
+      },
+      "minimumConfirmations": 3,
+      "confirmations": null
+    },
+    {
+      "id": "f18975b52df84ab38e910b91c53d5c74",
+      "result": {
+        "data": {
+          "result": "456900000"
+        },
+        "error": null
+      },
+      "status": "completed",
+      "task": {
+        "ID": 96,
+        "CreatedAt": "2020-02-26T00:57:01.047439Z",
+        "UpdatedAt": "2020-02-26T00:57:01.047439Z",
+        "DeletedAt": null,
+        "type": "multiply",
+        "confirmations": null,
+        "params": {
+          "times": 100000000
+        }
+      },
+      "minimumConfirmations": 3,
+      "confirmations": null
+    },
+    {
+      "id": "2120446eb18f4b3e83b8200f506ce362",
+      "result": {
+        "data": {
+          "result": "0x000000000000000000000000000000000000000000000000000000001b3bbda0"
+        },
+        "error": null
+      },
+      "status": "completed",
+      "task": {
+        "ID": 97,
+        "CreatedAt": "2020-02-26T00:57:01.049588Z",
+        "UpdatedAt": "2020-02-26T00:57:01.049588Z",
+        "DeletedAt": null,
+        "type": "ethint256",
+        "confirmations": null,
+        "params": {
+        }
+      },
+      "minimumConfirmations": 3,
+      "confirmations": null
+    },
+    {
+      "id": "a70ed1bb57114a02b9c8411b424a2923",
+      "result": {
+        "data": {
+        },
+        "error": "BumpGasUntilSafe FindTxByAttempt: record not found"
+      },
+      "status": "errored",
+      "task": {
+        "ID": 98,
+        "CreatedAt": "2020-02-26T00:57:01.051909Z",
+        "UpdatedAt": "2020-02-26T00:57:01.051909Z",
+        "DeletedAt": null,
+        "type": "ethtx",
+        "confirmations": null,
+        "params": {
+        }
+      },
+      "minimumConfirmations": 3,
+      "confirmations": 3
+    }
+  ],
+  "createdAt": "2020-03-04T00:06:21.165604Z",
+  "finishedAt": "2020-03-04T00:07:12.673802Z",
+  "updatedAt": "2020-03-04T00:07:12.683191Z",
+  "creationHeight": 7448782,
+  "observedHeight": 7448787,
+  "overrides": {
+    "address": "0x5471030A14ea46A32F065ac226516723B429Ec2B",
+    "dataPrefix": "0xc213a38d6439958431030f44b3e696d8c24d33a058eca7c55d9cda6cd771971f000000000000000000000000000000000000000000000000016345785d8a0000000000000000000000000000b4302f5bff79febe8e75a8fcb1a62c640a7982714357855e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005e5ef20b",
+    "functionSelector": "0x4ab0d190"
+  },
+  "payment": "100000000000000000",
+  "initiator": {
+    "type": "runlog",
+    "params": {
+      "address": "0x5471030a14ea46a32f065ac226516723b429ec2b"
+    }
+  }
+}
+
+
+logs of failure event from RPC:
+ctrl+f "job_error":"BumpGasUntilSafe FindTxByAttempt: record not found"
+
+{"level":"info","ts":1583280390.9829025,"caller":"web/router.go:345","msg":"GET /jobs/1060a4c63b62495b959968863553bd37/runs/id/a2771442de0247e8938b8559263ca53f/routeInfo.json","method":"GET","status":200,"path":"/jobs/1060a4c63b62495b959968863553bd37/runs/id/a2771442de0247e8938b8559263ca53f/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:30","latency":"476.864��s"}
+{"level":"info","ts":1583280390.987506,"caller":"web/router.go:345","msg":"GET /jobs/1060a4c63b62495b959968863553bd37/runs/routeInfo.json","method":"GET","status":200,"path":"/jobs/1060a4c63b62495b959968863553bd37/runs/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:30","latency":"2.321632ms"}
+{"level":"info","ts":1583280392.4402523,"caller":"web/router.go:345","msg":"GET /templates/vendors~containers-JobRuns-Show-Overview.eb1e21f0.js","method":"GET","status":200,"path":"/templates/vendors~containers-JobRuns-Show-Overview.eb1e21f0.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:32","latency":"1.449628ms"}
+{"level":"info","ts":1583280392.443204,"caller":"web/router.go:345","msg":"GET /templates/containers-JobRuns-Show-ErrorLog~containers-JobRuns-Show-Json~containers-JobRuns-Show-Overview.3d440b7e.js","method":"GET","status":200,"path":"/templates/containers-JobRuns-Show-ErrorLog~containers-JobRuns-Show-Json~containers-JobRuns-Show-Overview.3d440b7e.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:32","latency":"530.053��s"}
+{"level":"info","ts":1583280392.4454327,"caller":"web/router.go:345","msg":"GET /templates/containers-JobRuns-Show-Overview.22c5ca13.js","method":"GET","status":200,"path":"/templates/containers-JobRuns-Show-Overview.22c5ca13.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:32","latency":"351.578��s"}
+{"level":"info","ts":1583280392.6088238,"caller":"web/router.go:345","msg":"GET /v2/user/balances","method":"GET","status":200,"path":"/v2/user/balances","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:32","latency":"12.48068498s"}
+{"level":"info","ts":1583280392.6800969,"caller":"web/router.go:345","msg":"GET /v2/runs/af4ff8500a254628b13783430f5dd342","method":"GET","status":200,"path":"/v2/runs/af4ff8500a254628b13783430f5dd342","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:32","latency":"33.539331ms"}
+{"level":"info","ts":1583280392.8809092,"caller":"web/router.go:345","msg":"GET /jobs/1060a4c63b62495b959968863553bd37/runs/id/af4ff8500a254628b13783430f5dd342/json/routeInfo.json","method":"GET","status":200,"path":"/jobs/1060a4c63b62495b959968863553bd37/runs/id/af4ff8500a254628b13783430f5dd342/json/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:32","latency":"7.15837ms"}
+{"level":"info","ts":1583280398.2429347,"caller":"web/router.go:345","msg":"GET /templates/vendors~containers-JobRuns-Show-Json~containers-Jobs-Definition.06e21420.js","method":"GET","status":200,"path":"/templates/vendors~containers-JobRuns-Show-Json~containers-Jobs-Definition.06e21420.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:38","latency":"345.563��s"}
+{"level":"info","ts":1583280398.2453146,"caller":"web/router.go:345","msg":"GET /templates/containers-JobRuns-Show-Json.4464f35b.js","method":"GET","status":200,"path":"/templates/containers-JobRuns-Show-Json.4464f35b.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:38","latency":"102.796��s"}
+{"level":"info","ts":1583280398.3625886,"caller":"web/router.go:345","msg":"GET /v2/runs/af4ff8500a254628b13783430f5dd342","method":"GET","status":200,"path":"/v2/runs/af4ff8500a254628b13783430f5dd342","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:38","latency":"35.516482ms"}
+{"level":"info","ts":1583280401.0801618,"caller":"web/router.go:345","msg":"GET /v2/user/balances","method":"GET","status":200,"path":"/v2/user/balances","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:41","latency":"8.450055951s"}
+{"level":"info","ts":1583280405.6416461,"caller":"web/router.go:345","msg":"GET /v2/user/balances","method":"GET","status":200,"path":"/v2/user/balances","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:45","latency":"5.362749614s"}
+{"level":"info","ts":1583280411.1383977,"caller":"web/router.go:345","msg":"GET /jobs/1060a4c63b62495b959968863553bd37/runs/id/af4ff8500a254628b13783430f5dd342/json","method":"GET","status":200,"path":"/jobs/1060a4c63b62495b959968863553bd37/runs/id/af4ff8500a254628b13783430f5dd342/json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:51","latency":"2.55976ms"}
+{"level":"info","ts":1583280411.2271028,"caller":"web/router.go:345","msg":"GET /templates/styles.5bf9dfef.js","method":"GET","status":200,"path":"/templates/styles.5bf9dfef.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:51","latency":"259.64��s"}
+{"level":"info","ts":1583280411.2300234,"caller":"web/router.go:345","msg":"GET /main.cb2b4b25.js","method":"GET","status":200,"path":"/main.cb2b4b25.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:51","latency":"2.319411ms"}
+{"level":"info","ts":1583280411.2427988,"caller":"web/router.go:345","msg":"GET /styles.5bf9dfef.css","method":"GET","status":200,"path":"/styles.5bf9dfef.css","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:51","latency":"81.885��s"}
+{"level":"info","ts":1583280411.253021,"caller":"web/router.go:345","msg":"GET /templates/vendors~main.d32689e7.js","method":"GET","status":200,"path":"/templates/vendors~main.d32689e7.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:51","latency":"22.717423ms"}
+{"level":"info","ts":1583280411.9909937,"caller":"web/router.go:345","msg":"GET /templates/vendors~containers-JobRuns-Show-Json~containers-Jobs-Definition.06e21420.js","method":"GET","status":200,"path":"/templates/vendors~containers-JobRuns-Show-Json~containers-Jobs-Definition.06e21420.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:51","latency":"310.433��s"}
+{"level":"info","ts":1583280411.9918249,"caller":"web/router.go:345","msg":"GET /templates/containers-JobRuns-Show-ErrorLog~containers-JobRuns-Show-Json~containers-JobRuns-Show-Overview.3d440b7e.js","method":"GET","status":200,"path":"/templates/containers-JobRuns-Show-ErrorLog~containers-JobRuns-Show-Json~containers-JobRuns-Show-Overview.3d440b7e.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:51","latency":"247.186��s"}
+{"level":"info","ts":1583280411.9922454,"caller":"web/router.go:345","msg":"GET /templates/containers-JobRuns-Show-Json.4464f35b.js","method":"GET","status":200,"path":"/templates/containers-JobRuns-Show-Json.4464f35b.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:51","latency":"94.353��s"}
+{"level":"info","ts":1583280412.1110206,"caller":"web/router.go:345","msg":"GET /runs/routeInfo.json","method":"GET","status":200,"path":"/runs/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:52","latency":"103.527��s"}
+{"level":"info","ts":1583280412.1177974,"caller":"web/router.go:345","msg":"GET /config/routeInfo.json","method":"GET","status":200,"path":"/config/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:52","latency":"111.522��s"}
+{"level":"info","ts":1583280412.1247945,"caller":"web/router.go:345","msg":"GET /transactions/routeInfo.json","method":"GET","status":200,"path":"/transactions/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:52","latency":"106.844��s"}
+{"level":"info","ts":1583280412.1254861,"caller":"web/router.go:345","msg":"GET /routeInfo.json","method":"GET","status":200,"path":"/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:52","latency":"65.593��s"}
+{"level":"info","ts":1583280412.149096,"caller":"web/router.go:345","msg":"GET /bridges/routeInfo.json","method":"GET","status":200,"path":"/bridges/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:52","latency":"146.634��s"}
+{"level":"info","ts":1583280412.2364328,"caller":"web/router.go:345","msg":"GET /jobs/routeInfo.json","method":"GET","status":200,"path":"/jobs/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:52","latency":"130.827��s"}
+{"level":"info","ts":1583280412.2450802,"caller":"web/router.go:345","msg":"GET /templates/src-pages-config.25e5ebd7.js","method":"GET","status":200,"path":"/templates/src-pages-config.25e5ebd7.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:52","latency":"111.642��s"}
+{"level":"info","ts":1583280412.2469177,"caller":"web/router.go:345","msg":"GET /v2/runs/af4ff8500a254628b13783430f5dd342","method":"GET","status":200,"path":"/v2/runs/af4ff8500a254628b13783430f5dd342","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:52","latency":"34.804316ms"}
+{"level":"info","ts":1583280412.2536325,"caller":"web/router.go:345","msg":"GET /templates/src-pages-runs-index.a41c197c.js","method":"GET","status":200,"path":"/templates/src-pages-runs-index.a41c197c.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:52","latency":"60.336��s"}
+{"level":"info","ts":1583280412.2557452,"caller":"web/router.go:345","msg":"GET /templates/src-pages-transactions-index.2ac077d8.js","method":"GET","status":200,"path":"/templates/src-pages-transactions-index.2ac077d8.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:52","latency":"55.258��s"}
+{"level":"info","ts":1583280412.2619667,"caller":"web/router.go:345","msg":"GET /templates/src-pages-index.11d74f4e.js","method":"GET","status":200,"path":"/templates/src-pages-index.11d74f4e.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:52","latency":"102.78��s"}
+{"level":"info","ts":1583280412.3204496,"caller":"web/router.go:345","msg":"GET /v2/user/balances","method":"GET","status":200,"path":"/v2/user/balances","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:52","latency":"11.21859015s"}
+{"level":"info","ts":1583280412.327185,"caller":"web/router.go:345","msg":"GET /templates/src-pages-bridges.22022bb9.js","method":"GET","status":200,"path":"/templates/src-pages-bridges.22022bb9.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:52","latency":"124.502��s"}
+{"level":"info","ts":1583280412.363561,"caller":"web/router.go:345","msg":"GET /templates/src-pages-jobs.87d683bc.js","method":"GET","status":200,"path":"/templates/src-pages-jobs.87d683bc.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:52","latency":"86.616��s"}
+{"level":"info","ts":1583280412.3700821,"caller":"web/router.go:345","msg":"GET /v2/runs/af4ff8500a254628b13783430f5dd342","method":"GET","status":200,"path":"/v2/runs/af4ff8500a254628b13783430f5dd342","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:52","latency":"34.319947ms"}
+{"level":"info","ts":1583280412.4479365,"caller":"web/router.go:345","msg":"GET /jobs/1060a4c63b62495b959968863553bd37/runs/id/af4ff8500a254628b13783430f5dd342/json/routeInfo.json","method":"GET","status":200,"path":"/jobs/1060a4c63b62495b959968863553bd37/runs/id/af4ff8500a254628b13783430f5dd342/json/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:52","latency":"5.587185ms"}
+{"level":"info","ts":1583280412.4519675,"caller":"web/router.go:345","msg":"GET /jobs/1060a4c63b62495b959968863553bd37/runs/id/af4ff8500a254628b13783430f5dd342/routeInfo.json","method":"GET","status":200,"path":"/jobs/1060a4c63b62495b959968863553bd37/runs/id/af4ff8500a254628b13783430f5dd342/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:52","latency":"786.275��s"}
+{"level":"info","ts":1583280412.4531722,"caller":"web/router.go:345","msg":"GET /jobs/1060a4c63b62495b959968863553bd37/routeInfo.json","method":"GET","status":200,"path":"/jobs/1060a4c63b62495b959968863553bd37/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:52","latency":"744.047��s"}
+{"level":"info","ts":1583280412.5500631,"caller":"web/router.go:345","msg":"GET /favicon.ico","method":"GET","status":200,"path":"/favicon.ico","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:06:52","latency":"403.666��s"}
+{"level":"warn","ts":1583280432.7115827,"caller":"services/run_executor.go:88","msg":"Task failed","job":"1060a4c63b62495b959968863553bd37","run":"af4ff8500a254628b13783430f5dd342","status":"errored","creation_height":"7448782","observed_height":"7448787","job_error":"BumpGasUntilSafe FindTxByAttempt: record not found","input_amount":"0.100000000000000000","external_id":"0xc213a38d6439958431030f44b3e696d8c24d33a058eca7c55d9cda6cd771971f"}
+{"level":"info","ts":1583280784.271236,"caller":"web/router.go:345","msg":"GET /templates/vendors~containers-Bridges-Edit~containers-Bridges-Index~containers-Bridges-New~containers-Bridges-S~620b4657.364b8730.js","method":"GET","status":200,"path":"/templates/vendors~containers-Bridges-Edit~containers-Bridges-Index~containers-Bridges-New~containers-Bridges-S~620b4657.364b8730.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:04","latency":"256.52��s"}
+{"level":"info","ts":1583280784.274475,"caller":"web/router.go:345","msg":"GET /templates/vendors~containers-Dashboards-Index~containers-Jobs-Show.4d6ce235.js","method":"GET","status":200,"path":"/templates/vendors~containers-Dashboards-Index~containers-Jobs-Show.4d6ce235.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:04","latency":"449.573��s"}
+{"level":"info","ts":1583280784.2756293,"caller":"web/router.go:345","msg":"GET /templates/vendors~containers-Dashboards-Index.3fe86422.js","method":"GET","status":200,"path":"/templates/vendors~containers-Dashboards-Index.3fe86422.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:04","latency":"310.35��s"}
+{"level":"info","ts":1583280784.2773912,"caller":"web/router.go:345","msg":"GET /templates/containers-Dashboards-Index.5a1ef237.js","method":"GET","status":200,"path":"/templates/containers-Dashboards-Index.5a1ef237.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:04","latency":"334.938��s"}
+{"level":"info","ts":1583280784.4788916,"caller":"web/router.go:345","msg":"GET /v2/specs","method":"GET","status":200,"path":"/v2/specs","query":"size=4","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:04","latency":"47.509969ms"}
+{"level":"info","ts":1583280784.5506303,"caller":"web/router.go:345","msg":"GET /v2/runs","method":"GET","status":200,"path":"/v2/runs","query":"size=5&sort=-createdAt","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:04","latency":"120.502767ms"}
+{"level":"info","ts":1583280784.7598255,"caller":"web/router.go:345","msg":"GET /jobs/5f485d7bb77b42519a0991229fee1c52/routeInfo.json","method":"GET","status":200,"path":"/jobs/5f485d7bb77b42519a0991229fee1c52/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:04","latency":"445.859��s"}
+{"level":"info","ts":1583280784.7614357,"caller":"web/router.go:345","msg":"GET /jobs/0e9e32c7e4d144c4a4da599afb5c678b/routeInfo.json","method":"GET","status":200,"path":"/jobs/0e9e32c7e4d144c4a4da599afb5c678b/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:04","latency":"429.269��s"}
+{"level":"info","ts":1583280784.765303,"caller":"web/router.go:345","msg":"GET /jobs/new/routeInfo.json","method":"GET","status":200,"path":"/jobs/new/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:04","latency":"379.318��s"}
+{"level":"info","ts":1583280784.7906342,"caller":"web/router.go:345","msg":"GET /jobs/7e75ce0f80d043dca4993cb419943a54/routeInfo.json","method":"GET","status":200,"path":"/jobs/7e75ce0f80d043dca4993cb419943a54/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:04","latency":"444.816��s"}
+{"level":"info","ts":1583280784.7925053,"caller":"web/router.go:345","msg":"GET /jobs/15d7f7a2f35143eca5ab5242414d6766/routeInfo.json","method":"GET","status":200,"path":"/jobs/15d7f7a2f35143eca5ab5242414d6766/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:04","latency":"407.753��s"}
+{"level":"info","ts":1583280784.9068654,"caller":"web/router.go:345","msg":"GET /jobs/1060a4c63b62495b959968863553bd37/runs/id/8a362bae3f604a3ba93868b39b57ff03/routeInfo.json","method":"GET","status":200,"path":"/jobs/1060a4c63b62495b959968863553bd37/runs/id/8a362bae3f604a3ba93868b39b57ff03/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:04","latency":"549.364��s"}
+{"level":"info","ts":1583280784.9115121,"caller":"web/router.go:345","msg":"GET /jobs/be51b284fd2b4dd38854edaf7b289cbb/routeInfo.json","method":"GET","status":200,"path":"/jobs/be51b284fd2b4dd38854edaf7b289cbb/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:04","latency":"379.597��s"}
+{"level":"info","ts":1583280784.917439,"caller":"web/router.go:345","msg":"GET /jobs/be51b284fd2b4dd38854edaf7b289cbb/runs/id/3693eb641b254254b07b89ba1427b535/routeInfo.json","method":"GET","status":200,"path":"/jobs/be51b284fd2b4dd38854edaf7b289cbb/runs/id/3693eb641b254254b07b89ba1427b535/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:04","latency":"428.216��s"}
+{"level":"info","ts":1583280784.9187083,"caller":"web/router.go:345","msg":"GET /jobs/15d7f7a2f35143eca5ab5242414d6766/runs/id/6824c4a00eab449db1bd3b51b803193e/routeInfo.json","method":"GET","status":200,"path":"/jobs/15d7f7a2f35143eca5ab5242414d6766/runs/id/6824c4a00eab449db1bd3b51b803193e/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:04","latency":"387.303��s"}
+{"level":"info","ts":1583280786.9559984,"caller":"web/router.go:345","msg":"GET /jobs/1060a4c63b62495b959968863553bd37/runs/id/7ba30bd9aeda47bb88bc7b3ce39b5920/routeInfo.json","method":"GET","status":200,"path":"/jobs/1060a4c63b62495b959968863553bd37/runs/id/7ba30bd9aeda47bb88bc7b3ce39b5920/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:06","latency":"489.038��s"}
+{"level":"info","ts":1583280791.8005593,"caller":"web/router.go:345","msg":"GET /templates/vendors~containers-Jobs-Definition~containers-Jobs-Show.20a7f6e6.js","method":"GET","status":200,"path":"/templates/vendors~containers-Jobs-Definition~containers-Jobs-Show.20a7f6e6.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:11","latency":"287.944��s"}
+{"level":"info","ts":1583280791.8050508,"caller":"web/router.go:345","msg":"GET /templates/containers-Jobs-Show.9006dd13.js","method":"GET","status":200,"path":"/templates/containers-Jobs-Show.9006dd13.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:11","latency":"1.441229ms"}
+{"level":"info","ts":1583280791.9087176,"caller":"web/router.go:345","msg":"GET /v2/specs/1060a4c63b62495b959968863553bd37","method":"GET","status":200,"path":"/v2/specs/1060a4c63b62495b959968863553bd37","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:11","latency":"37.216994ms"}
+{"level":"info","ts":1583280791.9237232,"caller":"web/router.go:345","msg":"GET /v2/runs","method":"GET","status":200,"path":"/v2/runs","query":"jobSpecId=1060a4c63b62495b959968863553bd37&page=1&size=5&sort=-createdAt","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:11","latency":"51.587532ms"}
+{"level":"info","ts":1583280792.2253942,"caller":"web/router.go:345","msg":"GET /jobs/1060a4c63b62495b959968863553bd37/json/routeInfo.json","method":"GET","status":200,"path":"/jobs/1060a4c63b62495b959968863553bd37/json/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:12","latency":"1.317796ms"}
+{"level":"info","ts":1583280792.4061465,"caller":"web/router.go:345","msg":"GET /jobs/1060a4c63b62495b959968863553bd37/runs/id/ae9c36c7c0514e83a1962617d52c3819/routeInfo.json","method":"GET","status":200,"path":"/jobs/1060a4c63b62495b959968863553bd37/runs/id/ae9c36c7c0514e83a1962617d52c3819/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:12","latency":"500.188��s"}
+{"level":"info","ts":1583280792.4128518,"caller":"web/router.go:345","msg":"GET /jobs/1060a4c63b62495b959968863553bd37/runs/routeInfo.json","method":"GET","status":200,"path":"/jobs/1060a4c63b62495b959968863553bd37/runs/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:12","latency":"2.414308ms"}
+{"level":"info","ts":1583280792.4149144,"caller":"web/router.go:345","msg":"GET /jobs/1060a4c63b62495b959968863553bd37/runs/id/a2771442de0247e8938b8559263ca53f/routeInfo.json","method":"GET","status":200,"path":"/jobs/1060a4c63b62495b959968863553bd37/runs/id/a2771442de0247e8938b8559263ca53f/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:12","latency":"466.978��s"}
+{"level":"info","ts":1583280793.531075,"caller":"web/router.go:345","msg":"GET /v2/user/balances","method":"GET","status":200,"path":"/v2/user/balances","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:13","latency":"9.103664181s"}
+{"level":"info","ts":1583280796.9827228,"caller":"web/router.go:345","msg":"GET /templates/vendors~containers-JobRuns-Show-Overview.eb1e21f0.js","method":"GET","status":200,"path":"/templates/vendors~containers-JobRuns-Show-Overview.eb1e21f0.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:16","latency":"811.445��s"}
+{"level":"info","ts":1583280796.9835541,"caller":"web/router.go:345","msg":"GET /templates/containers-JobRuns-Show-Overview.22c5ca13.js","method":"GET","status":200,"path":"/templates/containers-JobRuns-Show-Overview.22c5ca13.js","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:16","latency":"177.079��s"}
+{"level":"info","ts":1583280797.2075632,"caller":"web/router.go:345","msg":"GET /v2/runs/af4ff8500a254628b13783430f5dd342","method":"GET","status":200,"path":"/v2/runs/af4ff8500a254628b13783430f5dd342","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:17","latency":"37.181703ms"}
+{"level":"info","ts":1583280797.4021826,"caller":"web/router.go:345","msg":"GET /jobs/1060a4c63b62495b959968863553bd37/runs/id/af4ff8500a254628b13783430f5dd342/error_log/routeInfo.json","method":"GET","status":200,"path":"/jobs/1060a4c63b62495b959968863553bd37/runs/id/af4ff8500a254628b13783430f5dd342/error_log/routeInfo.json","query":"","body":"","clientIP":"172.17.0.1","errors":"","servedAt":"2020-03-04 00:13:17","latency":"1.169117ms"}
+{"level":"info","ts":1583281555.397633,"caller":"store/tx_manager.go:660","msg":"Tx #0 is safe","minimumConfirmations":2,"txHash":"0x5338aad6acc4b3869ac84159618692de2868233c611e090bacda396a74cc60b0","txID":32646,"ethBalance":"23.752508222204257312","linkBalance":"9.640000000000000000","err":null}
