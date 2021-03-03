@@ -7,178 +7,178 @@ in this repository.
 1) Install truffle:
 
 	a) Install from AUR
-	|
-	| 	Dependencies	
-	| 		sudo pacman install nodejs
-	| 		sudo pacman install npm 
-	|
-	|	Install truffle from npm:	
-	|		npm install -g truffle
-	|
-	| 	Install truffle from AUR:
-	| 		git clone https://aur.archlinux.org/truffle.git
-	|		makepkg
-	|		sudo pacman -U truffle-5.0.31-1-any.pkg.tar.xz 
+	 
+	  	Dependencies	
+	  		sudo pacman install nodejs
+	  		sudo pacman install npm 
+	 
+	 	Install truffle from npm:	
+	 		npm install -g truffle
+	 
+	  	Install truffle from AUR:
+	  		git clone https://aur.archlinux.org/truffle.git
+	 		makepkg
+	 		sudo pacman -U truffle-5.0.31-1-any.pkg.tar.xz 
 
 2) truffle: working with metacoin example
 	
 	a) unbox metacoin
-	| 
-	|	truffle unbox metacoin
-	|
+	  
+	 	truffle unbox metacoin
+	 
 	
 	b) truffle project structure
-	|
-	|	contracts/: 
-	|		Directory for Solidity contracts
-	|
-	|	migrations/: 
-	|		Directory for scriptable deployment files
-	|
-	|	test/: 
-	|		Directory for test files for testing your application and contracts
-	|	
-	|	truffle.js: 
-	|		Truffle configuration file
-	|
-	| 	To run tests (solidity, javascript):
-	| 		truffle test ./test/TestMetaCoin.sol
-	|		truffle test ./test/metacoin.js
+	 
+	 	contracts/: 
+	 		Directory for Solidity contracts
+	 
+	 	migrations/: 
+	 		Directory for scriptable deployment files
+	 
+	 	test/: 
+	 		Directory for test files for testing your application and contracts
+	 	
+	 	truffle.js: 
+	 		Truffle configuration file
+	 
+	  	To run tests (solidity, javascript):
+	  		truffle test ./test/TestMetaCoin.sol
+	 		truffle test ./test/metacoin.js
 
 	c) to compile contracts (solidity -> JSON)
-	|
-	|	truffle compile
-	|	
-	|	Compiling your contracts...
-	|	===========================
-	|	> Compiling ./contracts/ConvertLib.sol
-	|	> Compiling ./contracts/MetaCoin.sol
-	|	> Compiling ./contracts/Migrations.sol
-	|	> Artifacts written to /home/pertinax/Desktop/metacoin/build/contracts
-	|	> Compiled successfully using:
-	|		- solc: 0.5.8+commit.23d335f2.Emscripten.clang
-	|
-	|	note:
-	|		contracts/MetaCoin.sol -> build/contracts/MetaCoin.json
+	 
+	 	truffle compile
+	 	
+	 	Compiling your contracts...
+	 	===========================
+	 	> Compiling ./contracts/ConvertLib.sol
+	 	> Compiling ./contracts/MetaCoin.sol
+	 	> Compiling ./contracts/Migrations.sol
+	 	> Artifacts written to /home/pertinax/Desktop/metacoin/build/contracts
+	 	> Compiled successfully using:
+	 		- solc: 0.5.8+commit.23d335f2.Emscripten.clang
+	 
+	 	note:
+	 		contracts/MetaCoin.sol -> build/contracts/MetaCoin.json
 
 	d) start up truffle builtin local blockchain "develop" (and create keypairs). Soon we will 
 	define other blockchains via truffle-config.js 
-	|	
-	|	truffle develop
-	|	
-	|	Truffle Develop started at http://127.0.0.1:9545/
-	|
-	|	Accounts:
-	|	(0) 0x8289986b75fcd68a219f46b59898647177212bf8
-	|	(1) 0xc10c96ab5c6a86e28fd3b927321b08dba45b5c3c
-	|	(2) 0xe767e61030cdfa9049550a97c7e7e1583b32f8e7
-	|	(3) 0xef0c48fcce671d3ddb0fe48f22c0c4dad95d0b12
-	|	(4) 0xf916ca01eb431dddd1f76ba00f33dfa1ee44dd87
-	|	(5) 0x876dd2006bad38f536d1a5e0ddef146f99b03c08
-	|	(6) 0x06cf7e56355bbbacb82bd6673a793b6d1b795d12
-	|	(7) 0x1af54f1e1e5dd44e5bbeb1ef3a212a25068660b4
-	|	(8) 0x73c726b3be9c4d58bb64ccd4c520501c86ec368a
-	|	(9) 0x5e6938875399c47cb582fc0a41fcec3562daea99
-	|
-	|	Private Keys:
-	|	(0) 9d4d608c7416e0650c6cbebb6527d018ce3150c9f450b0ac66a09c9c8c3a0f1f
-	|	(1) db9be100283b4864996c26bfc58d24dc9285e2fda68c49d7296cb90c58f1b078
-	|	(2) 1515c694803f7a666246c6d7ca76860e00a93d29b852ad4bd2476caa49389ea8
-	|	(3) 591e688216bcb5e0ff7080f0e9ecaab71209c7bf886b25ccedf08cd82eb7acfe
-	|	(4) 1dd1dab0132346cd82b79f85a723ea121463e71b6b75bec328065cbb75a8a0ac
-	|	(5) 39395c3e48579495b4c9d4954de996ce58a4e7f64efba15c821b40b819cf16d8
-	|	(6) b7a4746c8da10aee4a9495e14248f199a30bdecc62c9be4f92320b4d520ac95b
-	|	(7) c3653c24cb8eff5cc3268a40125b1bc9ab2d4b57d813183ee398510490c22ff0
-	|	(8) 81bf03dd49f6b272bebd54decf709e02cfba3cdd983485cac424a891faae7684
-	|	(9) 7bf0506b7d518e68409e973706a45dc2c00aefc17f12129e22444c88d4d5f13a
-	|
+	 	
+	 	truffle develop
+	 	
+	 	Truffle Develop started at http://127.0.0.1:9545/
+	 
+	 	Accounts:
+	 	(0) 0x8289986b75fcd68a219f46b59898647177212bf8
+	 	(1) 0xc10c96ab5c6a86e28fd3b927321b08dba45b5c3c
+	 	(2) 0xe767e61030cdfa9049550a97c7e7e1583b32f8e7
+	 	(3) 0xef0c48fcce671d3ddb0fe48f22c0c4dad95d0b12
+	 	(4) 0xf916ca01eb431dddd1f76ba00f33dfa1ee44dd87
+	 	(5) 0x876dd2006bad38f536d1a5e0ddef146f99b03c08
+	 	(6) 0x06cf7e56355bbbacb82bd6673a793b6d1b795d12
+	 	(7) 0x1af54f1e1e5dd44e5bbeb1ef3a212a25068660b4
+	 	(8) 0x73c726b3be9c4d58bb64ccd4c520501c86ec368a
+	 	(9) 0x5e6938875399c47cb582fc0a41fcec3562daea99
+	 
+	 	Private Keys:
+	 	(0) 9d4d608c7416e0650c6cbebb6527d018ce3150c9f450b0ac66a09c9c8c3a0f1f
+	 	(1) db9be100283b4864996c26bfc58d24dc9285e2fda68c49d7296cb90c58f1b078
+	 	(2) 1515c694803f7a666246c6d7ca76860e00a93d29b852ad4bd2476caa49389ea8
+	 	(3) 591e688216bcb5e0ff7080f0e9ecaab71209c7bf886b25ccedf08cd82eb7acfe
+	 	(4) 1dd1dab0132346cd82b79f85a723ea121463e71b6b75bec328065cbb75a8a0ac
+	 	(5) 39395c3e48579495b4c9d4954de996ce58a4e7f64efba15c821b40b819cf16d8
+	 	(6) b7a4746c8da10aee4a9495e14248f199a30bdecc62c9be4f92320b4d520ac95b
+	 	(7) c3653c24cb8eff5cc3268a40125b1bc9ab2d4b57d813183ee398510490c22ff0
+	 	(8) 81bf03dd49f6b272bebd54decf709e02cfba3cdd983485cac424a891faae7684
+	 	(9) 7bf0506b7d518e68409e973706a45dc2c00aefc17f12129e22444c88d4d5f13a
+	 
 
 	e) now we are at the following prompt "inside" our local blockchain "develop". Now we want to 
 	perform some contract-creation transactions (i.e. "migrations") to deploy MetaCoin.sol to
 	our local blockchain
-	|
-	|	truffle(develop)>
+	 
+	 	truffle(develop)>
 
 	f) At this prompt we will perform "migrate". This will read the .js files (in numeric order)
 	and deploy them to the blockchain. Each deployer.deploy() statement in the migrations file 
 	becomes a transaction on the blockchain. Note how account = the first account listed when 
 	we "develop"
-	|
-	| 	migrate
-	|
-	|	...
-	|		Deploying 'ConvertLib'
-	|	----------------------
-	|	> transaction hash:	0xf2291ebfc644ce78c5701da0dd0f47a5e9d597aa8f10f5a7a48dffa565df2cd7
-	|	> Blocks: 0			Seconds: 0
-	|	> contract address:	0x35a888CaB7247bB7E9f0259970e07f7029606679
-	|	> block number:		3
-	|	> block timestamp:	1582845150
-	|	> account:			0x8289986B75Fcd68a219f46B59898647177212Bf8
-	|	> balance:			99.99336482
-	|	> gas used:			103623
-	|	> gas price:		20 gwei
-	|	> value sent:		0 ETH
-	|	
-	|	> total cost:		0.00207246 ETH
-	|
-	|	Linking
-	|	-------
-	|	* Contract: MetaCoin <--> Library: ConvertLib (at address: 0x35a888CaB7247bB7E9f0259970e07f7029606679)
-	|
-	|	Deploying 'MetaCoin'
-	|	--------------------
-	|	> transaction hash:	0xec57b1a6bde64a6db32557437f62dd1d2c10586af329fda5359b259c645c1d82
-	|	> Blocks: 0			Seconds: 0
-	|	> contract address:	0x583225781Ec4B8e9DFb7249fAC440b61e7035Cd1
-	|	> block number:		4
-	|	> block timestamp:	1582845150
-	|	> account:			0x8289986B75Fcd68a219f46B59898647177212Bf8
-	|	> balance:			99.98659784
-	|	> gas used:			338349
-	|	> gas price:		20 gwei
-	|	> value sent:		0 ETH
-	|	> total cost:		0.00676698 ETH
+	 
+	  	migrate
+	 
+	 	...
+	 		Deploying 'ConvertLib'
+	 	----------------------
+	 	> transaction hash:	0xf2291ebfc644ce78c5701da0dd0f47a5e9d597aa8f10f5a7a48dffa565df2cd7
+	 	> Blocks: 0			Seconds: 0
+	 	> contract address:	0x35a888CaB7247bB7E9f0259970e07f7029606679
+	 	> block number:		3
+	 	> block timestamp:	1582845150
+	 	> account:			0x8289986B75Fcd68a219f46B59898647177212Bf8
+	 	> balance:			99.99336482
+	 	> gas used:			103623
+	 	> gas price:		20 gwei
+	 	> value sent:		0 ETH
+	 	
+	 	> total cost:		0.00207246 ETH
+	 
+	 	Linking
+	 	-------
+	 	* Contract: MetaCoin <--> Library: ConvertLib (at address: 0x35a888CaB7247bB7E9f0259970e07f7029606679)
+	 
+	 	Deploying 'MetaCoin'
+	 	--------------------
+	 	> transaction hash:	0xec57b1a6bde64a6db32557437f62dd1d2c10586af329fda5359b259c645c1d82
+	 	> Blocks: 0			Seconds: 0
+	 	> contract address:	0x583225781Ec4B8e9DFb7249fAC440b61e7035Cd1
+	 	> block number:		4
+	 	> block timestamp:	1582845150
+	 	> account:			0x8289986B75Fcd68a219f46B59898647177212Bf8
+	 	> balance:			99.98659784
+	 	> gas used:			338349
+	 	> gas price:		20 gwei
+	 	> value sent:		0 ETH
+	 	> total cost:		0.00676698 ETH
 
 	g) This last step was done with truffles inbuilt local blockchain. However, we do not have any block explorer
 	capabiliteies with this local blockchain. In order to do this we can use ganache (a better local ethereum 
 	blockchain provided by the truffle framework as a separate application).
-	|
-	|	https://github.com/trufflesuite/ganache/releases
-	|	./ganache-2.3.0-beta.2-linux-x86_64.AppImage		 	(to run)
-	|
+	 
+	 	https://github.com/trufflesuite/ganache/releases
+	 	./ganache-2.3.0-beta.2-linux-x86_64.AppImage		 	(to run)
+	 
 
 	h) update the truffle-config.js file to point to ganache and "truffle migrate" to deploy our contract to the 
 	ganache local blockchain.
-	|
-	|	module.exports = {
-	|		networks: {
-	|		 development: {
-	|			host: "127.0.0.1",
-	|			port: 7545,
-	|			network_id: "*"
-	|		 }
-	|		}
-	|	};
-	|
+	 
+	 	module.exports = {
+	 		networks: {
+	 		 development: {
+	 			host: "127.0.0.1",
+	 			port: 7545,
+	 			network_id: "*"
+	 		 }
+	 		}
+	 	};
+	 
 
 	i) now we want to interact with the contract methods defined in MetaCoin.sol. this example shows us how to 
 	interact with the contract to get the number of metacoins. note: when the contract is created, the contract 
 	mints 10000 metacoins to the contract creator.
-	|
-	|	truffle console --network development
-	|
-	|	check balance of account[0]:
-	|		truffle(development)> let instance = await MetaCoin.deployed()
-	|		truffle(development)> let accounts = await web3.eth.getAccounts()
-	|		truffle(development)> let balance = await instance.getBalance(accounts[0])
-	|		truffle(development)> balance.toNumber()	
-	|		balance.toNumber()
-	|			10000
-	|
-	|	transfer coins to account[1] (this sends a transaction):
-	|		truffle(development)> instance.sendCoin(accounts[1], 500)
-	|	
+	 
+	 	truffle console --network development
+	 
+	 	check balance of account[0]:
+	 		truffle(development)> let instance = await MetaCoin.deployed()
+	 		truffle(development)> let accounts = await web3.eth.getAccounts()
+	 		truffle(development)> let balance = await instance.getBalance(accounts[0])
+	 		truffle(development)> balance.toNumber()	
+	 		balance.toNumber()
+	 			10000
+	 
+	 	transfer coins to account[1] (this sends a transaction):
+	 		truffle(development)> instance.sendCoin(accounts[1], 500)
+	 	
 	>>>	note the sendCoin method (and transfer event) defined in MetaCoin.sol
 
 			event Transfer(address indexed _from, address indexed _to, uint256 _value);
@@ -228,74 +228,74 @@ in this repository.
 				}
 				]
 			}
-	|	
-	| 	check new balances:
-	|
-	|		truffle(development)> let received = await instance.getBalance(accounts[1])
-	|		truffle(development)> received.toNumber()
-	|			500 
-	|
-	|		truffle(development)> let newBalance = await instance.getBalance(accounts[0])
-	|		truffle(development)> newBalance.toNumber()
-	|			9500
-	|
+	 	
+	  	check new balances:
+	 
+	 		truffle(development)> let received = await instance.getBalance(accounts[1])
+	 		truffle(development)> received.toNumber()
+	 			500 
+	 
+	 		truffle(development)> let newBalance = await instance.getBalance(accounts[0])
+	 		truffle(development)> newBalance.toNumber()
+	 			9500
+	 
 
 3) Interacting with ethereum testnet (and mainnet)
 
 	a) Interacting with ethreum. first we will need to install the hdwallet-provider. Specifying Ropsten 
 	will require us to make some changes to truffle-config.js
-	|
-	|	npm install @truffle/hdwallet-provider
-	|
-	|	var HDWalletProvider = require("@truffle/hdwallet-provider");
-	|	const MNEMONIC = 'apple orange bananna';
-	|
-	|	module.exports = {
-	|		
-	|		networks: {
-	|
-	|			// renamed from (development)
-	|		 	ganache: {
-	|				
-	|				host: "127.0.0.1",
-	|				port: 7545,
-	|				network_id: "*"
-	|			},
-	|			// ropsten testnet			
-	|			ropsten: {
-	|		
-	|				provider: function() {
-	|					return new HDWalletProvider(MNEMONIC, "https://ropsten.infura.io/v3/API_KEY", HD_WALLET_INDEX)
-	|				},
-	|				network_id: 3,
-	|				gas: 4000000   //make sure this gas allocation isn't over 4M, which is the max
-	|			}
-	|		}
-	|	};
+	 
+	 	npm install @truffle/hdwallet-provider
+	 
+	 	var HDWalletProvider = require("@truffle/hdwallet-provider");
+	 	const MNEMONIC = 'apple orange bananna';
+	 
+	 	module.exports = {
+	 		
+	 		networks: {
+	 
+	 			// renamed from (development)
+	 		 	ganache: {
+	 				
+	 				host: "127.0.0.1",
+	 				port: 7545,
+	 				network_id: "*"
+	 			},
+	 			// ropsten testnet			
+	 			ropsten: {
+	 		
+	 				provider: function() {
+	 					return new HDWalletProvider(MNEMONIC, "https://ropsten.infura.io/v3/API_KEY", HD_WALLET_INDEX)
+	 				},
+	 				network_id: 3,
+	 				gas: 4000000   //make sure this gas allocation isn't over 4M, which is the max
+	 			}
+	 		}
+	 	};
 
 	j) attempt to migraate the contract to ropsten. if this is successful we will see a series of ethereum contract 
 	creation transactions deploying the contract(s).
-	|
-	|	truffle migrate --network ropsten
+	 
+	 	truffle migrate --network ropsten
 
 	k) Interact with the contract on ropsten.
-	|
-	|	truffle console --network ropsten
-	|	truffle(ropsten)> 
-	|
-	|	truffle(ropsten)> let instance = await MetaCoin.deployed()
-	|	truffle(ropsten)> let accounts = await web3.eth.getAccounts()
-	|	truffle(ropsten)> let ethBalance = await web3.eth.getBalance(address)
-	|
-	| 	note we want accounts[0] because the hdwallet provider starts at index (0 = HD_WALLET_INDEX)
-	|	truffle(ropsten)> let balance = await instance.getBalance(accounts[0])
-	|	truffle(ropsten)> balance.toNumber()
-	|		10000
-	|	
-	|	let received = await instance.getBalance(accounts[1])
-	|	received.toNumber()
-	|		777
-	|
-	|	truffle(ropsten)> let newBalance = await instance.getBalance(accounts[0])
-	|	truffle(ropsten)> newBalance.toNumber()
-	|		9223
+	 
+	 	truffle console --network ropsten
+	 	truffle(ropsten)> 
+	 
+	 	truffle(ropsten)> let instance = await MetaCoin.deployed()
+	 	truffle(ropsten)> let accounts = await web3.eth.getAccounts()
+	 	truffle(ropsten)> let ethBalance = await web3.eth.getBalance(address)
+	 
+	  	note we want accounts[0] because the hdwallet provider starts at index (0 = HD_WALLET_INDEX)
+	 	truffle(ropsten)> let balance = await instance.getBalance(accounts[0])
+	 	truffle(ropsten)> balance.toNumber()
+	 		10000
+	 	
+	 	let received = await instance.getBalance(accounts[1])
+	 	received.toNumber()
+	 		777
+	 
+	 	truffle(ropsten)> let newBalance = await instance.getBalance(accounts[0])
+	 	truffle(ropsten)> newBalance.toNumber()
+	 		9223

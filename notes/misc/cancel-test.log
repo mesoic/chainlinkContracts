@@ -4,14 +4,14 @@
 
 	
 2) Create a failing job run by defining a bridge to a non-existent endpoint. 
-	|
-	|	
-	|	Name: failing-ea
-	|	URL: https://localhost:7777
-	|	Confirmations: 0
-	|	Minimum Contract Payment: 0
-	|	Outgoing Token: pCyn0yvgNfSBsV4ocyd/K1AGPsaL1hQ6	
-	|
+	
+		
+		Name: failing-ea
+		URL: https://localhost:7777
+		Confirmations: 0
+		Minimum Contract Payment: 0
+		Outgoing Token: pCyn0yvgNfSBsV4ocyd/K1AGPsaL1hQ6	
+	
 
 3) Create a jobSpec in chainlink node which makes use of non-existent endpoint 
 	
@@ -64,18 +64,18 @@
 
 
 4) Confifure our job object in truffle suite to call the failed job 
-	|
-	|	{
-	|		"oracleAddress" : "0x5471030a14ea46a32f065ac226516723b429ec2b",
-	|		"jobId"			: "d34b21180b634336bf71abe2ce841b24",	
-	|		"payment"		: "100000000000000000"
-	|	}
-	|
+		
+		{
+			"oracleAddress" : "0x5471030a14ea46a32f065ac226516723b429ec2b",
+			"jobId"			: "d34b21180b634336bf71abe2ce841b24",	
+			"payment"		: "100000000000000000"
+		}
+		
 
 5) Call the failed job through our external adapter consumer contract
-	|
-	|	npx truffle exec scripts/externalAdapter/request-externalAdapter.js --network ropsten
-	|	Using network 'ropsten'.
+		
+		npx truffle exec scripts/externalAdapter/request-externalAdapter.js --network ropsten
+		Using network 'ropsten'.
 
 	>>> Creating request on contract: 0xb4302F5bFf79fEbe8e75a8fcB1A62C640A798271
 		txHash: 0xabc57161178daabd727e799587e009f2f4f09ad49502b2e3036a0052a46886ad
@@ -97,11 +97,11 @@
 
 6) We can verify at Tx hash that this call transfers 0.1LINK into the oracle contract for the 
 	purpousely failing job run.
-	|
-	|	https://ropsten.etherscan.io/tx/0xabc57161178daabd727e799587e009f2f4f09ad49502b2e3036a0052a46886ad
+		
+		https://ropsten.etherscan.io/tx/0xabc57161178daabd727e799587e009f2f4f09ad49502b2e3036a0052a46886ad
 
 7) After waiting for 300s (the timeout set in chainlink .env) we will try to call cancelRequest(). 
 	This will pull the 0.1LINK back into the consumer contract for the failed job request
-	|
-	|	https://ropsten.etherscan.io/tx/0xb309c657acfd4aa567659fe23b0ab7073317ba15be64a1fc8893fa26dd3821d1
+		
+		https://ropsten.etherscan.io/tx/0xb309c657acfd4aa567659fe23b0ab7073317ba15be64a1fc8893fa26dd3821d1
 	

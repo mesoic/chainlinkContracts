@@ -1,8 +1,0 @@
-{
-	"oracleAddress" : "0x5471030a14ea46a32f065ac226516723b429ec2b",
-	"jobId"			: "15d7f7a2f35143eca5ab5242414d6766",	
-	"payment"		: "100000000000000000",
-	"url"			: "https://min-api.cryptocompare.com/data/price?fsym=LINK&tsyms=USD",
-	"path"			: "USD",
-	"times"			: "100"
-}

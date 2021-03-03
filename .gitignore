@@ -2,6 +2,9 @@
 node_modules/
 build/
 
+# Logging 
+scripts/*/requests
+
 # Security
 .config.json
 package-lock.json
