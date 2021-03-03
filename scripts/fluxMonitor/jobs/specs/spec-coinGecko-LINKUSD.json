@@ -1,0 +1,46 @@
+{
+	"initiators": [
+		{
+			"type": "runlog",
+			"params": {
+				"address": "0x5471030a14ea46a32f065ac226516723b429ec2b"
+			}
+		}
+	],
+	"tasks": [
+		{
+			"type": "coingecko-ea",
+			"confirmations": null,
+			"params": {
+				"to": "USD",
+				"from": "LINK"
+			}
+		},
+		{
+			"type": "copy",
+			"confirmations": null,
+			"params": {
+				"copyPath": "result"
+			}
+		},
+		{
+			"type": "multiply",
+			"confirmations": null,
+			"params": {
+				"times": 100000000
+			}
+		},
+		{
+			"type": "ethint256",
+			"confirmations": null,
+			"params": {}
+		},
+		{
+			"type": "ethtx",
+			"confirmations": null,
+			"params": {}
+		}
+	],
+	"startAt": null,
+	"endAt": null
+}

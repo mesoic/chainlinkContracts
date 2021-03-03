@@ -155,7 +155,7 @@ E) Decentralizing the network
 
 
 
-D) Running the flux monitor 
+F) Running the flux monitor 
 
 	Now that we have a node that has some working external adapters. It is possible to create a flux monitor for a given piece of price data. For this it is useful to use the following article as a basis for reference material. 
 
@@ -172,7 +172,7 @@ D) Running the flux monitor
 
 		2) an AccessControlledAggregator.sol on-chain which is configured to work with our nodes. 
 
-D.1) Deployment strategy and Reflection: Stopping point
+G) Deployment strategy and Reflection: 
 
 	It has been a long time since I ran a node, and a lot of things have changed since I have really been able to sit down and take a hard look at chainlink. In the meantime, I learned Solidity well and vastly improved the the Javascript. I am a lot more comfortable with the consumer contract lifecycle and basic interaction with the node. Still, I feel that my infrastructure is ugly, and there is a lot of room for imporvement. It has gotten better though on the few short bursts I spent maintaining it this past year. I don't have to work very hard to stop and start the node now in AWS, though getting live in the cloud after months of downtime is difficult because you forget the protocol after a while. I never remember what happend in many physics projects I wrote - there was weird code in there that I am sure made perfect sense when I wrote it. After all, the physics came out right. The point is, when you lose the flow (thought process) of your project, the thought process becomeshard to get ahold of again. However, you do not forget, it comes together if you work at it. Still, there is the anxiety, I feel quite far behind on the technical details of Chainlink, but I get the overall pictre.
 
@@ -199,140 +199,3 @@ Flux Monitor Implementation: The objective of this exercise is to create a minim
 In order to achieve this, an existing node infrastructure will be used. The first step is to update the node infrastructure to the most recent version of chainlink (v0.10.1), and to verify the functionality of the node via liveness jobs(cron) which request the ETHUSD price, and via requests through an existing consumer contract which requests the LINKUSD price through the cryptocompare external adapter. All infrastructure is depolyed on the Ropsten testnet. 
 
 Once the node is verified as functional, the existing infrastrustucture is expanded to the case of multiple nodes. For simplicity, all nodes will be deployed as separate docker containers on a single EC2 instance. 
-
-
-A) Update the node: 
-
-	sudo yum update (linux AMI)
-	docker pull smartcontract/chainlink:0.10.1
-	docker pull fiews/cl-eth-failover
-
-
-B) Start the node with updated chainlink version and patch database: 
-
-	Use existing AWS architecture 
-	Restart Postgres Database 
-
-	Note: The node is configured to report to cloudWatch logs. Errors were encountered when starting the node
-
-		1) 	{ "level": "error", "ts": 1614708904.2861276, "caller": "logger/default.go:139", "msg": "unable to lock ORM: dial tcp: lookup chainlink-postgres.cpkt4axduud7.eu-central-1.rds.amazonaws.com on 172.31.0.2:53: no such host", "stacktrace": }
-
-			The reason for this was an incorrect endpioint configuration when starting the DB in the AWS console. The endpoint must be consistent with appears in the chainlink .env file.
-
-		2) { "level": "fatal", "ts": 1614709795.4249516, "caller": "store/store.go:70", "msg": "Unable to initialize ORM: pq: invalid input value for enum run_status: \"pending_confirmations\"\nerror running }
-
-			Recall from last time (restarting node - cold start), that we need to interact with the database in order to recover this error. 
-
-				./scripts/chainlink-postgres.sh
-				postgres=> \l
-				postgres=> \c chainlinkropsten;
-				chainlinkropsten=> \dt
-				chainlinkropsten=> truncate heads cascade;
-				chainlinkropsten=> truncate job_runs cascade;
-
-	Login successful. Note that it appears that we cannot connect to the ropsten chainlink explorer, so comment this out of the ".env" file. When starting the node, the existing configuration requests the ETHUSD price hourly to the cronConsumerContract.
-
-	Recall:
-	{
-		OracleAddress 			: 0x38868083fb89b571c53d2765d453d2f90f51e196
-		OracleContract 			: 0x5471030a14ea46a32f065ac226516723b429ec2b
-		cronConsumerContract 	: 0x187b0774af793cf6d92735e809b7457fb355fea6
-		ContractCreator 		: 0xebb230E499c1cB6883Bf6996576fFe9bd4D42fAc
-	}
-
-
-C) Verify consumerContract interaction via an external adapter.
-
-	Now we want to test interaction through our cryptocompare external adapter. Note that the cryptocompare external adapter has been previously deployed via AWS Lambda.
-
-	Recall: 
-	{
-		ccConsumerContract		: 0xb4302F5bFf79fEbe8e75a8fcB1A62C640A798271
-	}
-
-	Perform request: This requests jobId = 1060a4c63b62495b959968863553bd37, which fetches the price of LINK. The price of LINK is stored in contact variable "uint256 public data".
-
-
-		npx truffle exec scripts/externalAdapter/request-externalAdapter.js --network ropsten
-		Using network 'ropsten'.
-
-		Creating request on contract: 0xb4302F5bFf79fEbe8e75a8fcB1A62C640A798271
-		{
-			  specId: '0x3130363061346336336236323439356239353939363838363335353362643337',
-			  requester: '0xb4302F5bFf79fEbe8e75a8fcB1A62C640A798271',
-			  requestId: '0x7b1863904a0d6c70e869659241d055bfa3ae23b99454d3ac13fb52ff6104f4c5',
-			  payment: '0x016345785d8a0000',
-			  callbackAddr: '0xb4302F5bFf79fEbe8e75a8fcB1A62C640A798271',
-			  callbackFunc: '0x4357855e',
-			  expiration: '0x603ea4f7',
-			  data: <Buffer bf ff>,
-			  dataVersion: 1,
-			  topic: '0xd8d7ecc4800d25fa53ce0372f13a416d98907a7ef3d8d3bdd79cf4fe75529c65',
-			  txHash: '0x75c74190fa2cdd76f5611cc143f9f4f69ed899f08b0d25fb67341ce2075d3e6b'
-		}
-
-	Verify result: next step is to read the value written to the consumer contract by the chainlink node(=27.68$)
-
-		npx truffle exec scripts/externalAdapter/read-externalAdapter.js --network ropsten
-		Using network 'ropsten'.
-
-		2768000000
-		Truffle v5.1.14 (core: 5.1.14)
-		Node v12.20.0
-
-
-D) Facilitating diversity of data
-
-	In order to perform meaningful aggregation, it is necessary to implement multiple external adapters. In this secion, multiple external adapters are deployed in AWS in order to obtain the LINKUSD price. This is the first step towards preparing a viable node image which can be used to simulate on-chain aggregation from multiple data sources. 
-
-	In my original node configuratino, only the cryptocompare adapter was deployed. This was done via AWS lambda and a configured API endpoint:
-
-		(old) https://8ohf3vjoo0.execute-api.eu-central-1.amazonaws.com/adapters/cl-cc
-
-	To enable aggregation, we add some additional external adapaters to our node (bridges)	
-
-		{
-			coinGecko		: https://8ohf3vjoo0.execute-api.eu-central-1.amazonaws.com/adapters/coingecko-ea
-			coinPaprika 	: https://8ohf3vjoo0.execute-api.eu-central-1.amazonaws.com/adapters/coinpaprika-ea
-			cryptoCompare 	: https://8ohf3vjoo0.execute-api.eu-central-1.amazonaws.com/adapters/cryptocompare-ea
-		}
-
-	The API endpoints are verified in AWS, and jobSpecs are prepared in the chainlink node. 
-
-		{
-			coinGecko		: d38de8b842d045c28475cf573c7dfe33
-			coinPaprika 	: eb731064e4e44b18a7613bbc99d60145
-			cryptoCompare 	: 3b9831dba5d54f23a5f2bcbfe4e88414
-		}
-
-	Each adapter is then verified independently by calling a corresponding consumer contracts. It is important to verify that each data source is functional, prior deploying a proof of concept aggregator. 
-	
-		{ 
-			coinGecko 		: 0xb27a109dbd57e006b33c2f88f74be5169a8b0deb4c43a811d6f89fc10cf5d1f9
-			coinPaprika 	: 0x68646c5a36cb37bf6d87bb0599591f2c5f679e91c158b113269b2491a47792ae
-			cryptoCompare 	: 0xbfe7a55b9395676daff5049577849ba053769b74caba03f5c210a82e1d2ecdff
-		}
-
-
-	Note on Copy Adapter: The old and new version of cryptocompare result was retuned under data.USD. However, when porting the jobSpec for coinGecko and coinPaprika, job runs failed at <Multiply> with message:
-
-		"cannot parse into big.Float: : can't convert to decimal:
-
-	Comparing runs between adapters I noticed that, despite succeeding, <Copy> was returning "null" because the jobSpec was requesting data.USD on the returned JSON (which does not exist for those adapters). When "null" is passed, it cannot be parsed big.Float and then <Multiply> fails. In this case, the jobSpec <Copy> adapter must look for data.result for each respective job run. 
-
-D) Running the flux monitor 
-
-	Update chainlink in our consumer contracts development environment, 
-
-		npm update
-
-	Deploy the fluxMonitor contract:
-		AccessControlledAggregator.sol
-
-	Contract is available here: 
-		https://github.com/smartcontractkit/chainlink/blob/develop/evm-contracts/src/v0.6/AccessControlledAggregator.sol	
-
-	Example contract (LINKETH) is here (mainnet): 
-		https://etherscan.io/address/0x7E6C635d6A53B5033D1B0ceE84ecCeA9096859e4#code
-		 
-
