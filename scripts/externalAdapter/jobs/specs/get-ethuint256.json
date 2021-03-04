@@ -1,0 +1,44 @@
+{
+	"initiators": [
+		{
+			"type": "runlog",
+			"params": {
+				"address": "0x5471030a14ea46a32f065ac226516723b429ec2b"
+			}
+		}
+	],
+	"tasks": [
+		{
+			"type": "httpget",
+			"confirmations": null,
+			"params": {
+			}
+		},
+		{
+			"type": "jsonparse",
+			"confirmations": null,
+			"params": {
+			}
+		},
+		{
+			"type": "multiply",
+			"confirmations": null,
+			"params": {
+			}
+		},
+		{
+			"type": "ethuint256",
+			"confirmations": null,
+			"params": {
+			}
+		},
+		{
+			"type": "ethtx",
+			"confirmations": null,
+			"params": {
+			}
+		}
+	],
+	"startAt": null,
+	"endAt": null
+}

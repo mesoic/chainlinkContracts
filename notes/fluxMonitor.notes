@@ -11,7 +11,7 @@ A) Update the basics:
 
 	Update Linux AMI:
 		sudo yum update (linux AMI)
-		docker pull smartcontract/chainlink:0.10.1
+		docker pull smartcontract/latest
 		docker pull fiews/cl-eth-failover
 
 	Get new fiews API key: 	
@@ -267,25 +267,168 @@ E) Decentralizing the network
 			- Create Snapshot of RDS database
 			- Push updated repositories to git
 				
-		
+		Chainlink version issue: Noticed that chainlink is running v0.8.18, which (might) not have the fluxMonitor adapter. This is due "latest" pointing to 0.8.18. Will image with this version prior to attempting upgrade to v0.10.1.
+
+			docker pull smartcontract/chainlink:0.10.1
 
 
-
-
-
-
-
-
-
-
-
-
-F) Running the flux monitor 
+F) Running a flux monitor 
 
 	Now that we have a node that has some working external adapters. It is possible to create a flux monitor for a given piece of price data. For this it is useful to use the following article as a basis for reference material. 
 
 		Flux Aggregator Contracts: The Technical Explanation
-			https://news.reputation.link/article/27
+				https://news.reputation.link/article/27
+
+	F.0) Understanding the deployment.
+	
+		For this we need two peices. The contract, and jobSpecs. At this point, we have deployed three nodes, and have verified the operation of the coinGecko, coinPaprika, and cryptoCompare external adapters on EACH node by making deploying an Orcale.sol for each node, and requesting data through a simple consumer contract. 
+		
+		In principle the deployment of a feed should be quite stratighforward. First is to deploy an aggregator contract (AccessControlledAggregator.sol). The contract must then be configured to point to the nodes on our network. After this, a jobSpec containing the fluxmonitor initiator must be deployed on each node. 
+
+		Note the difference between standard data requests and aggregators:
+
+			Standard Request. 
+				- Deploy Oracle.sol and setFulfillmentPermission(_node, true)
+				- Create RunLog jobSpec and point to address(Oracle.sol)
+				- Create request through consumerContract.sol
+				- Node fulfills the request through Oracle.sol
+
+			Aggregator Request. 
+				- Deploy AccessControlledAggregator.sol and changeOracles(_nodes)
+				- Create fluxmonitor jobSpec and point to address(AccessControlledAggregator.sol)
+				- Nodes monitor off-chain data in rounds 
+				- Nodes submit new value to fluxmonitor when contract value deviates from off chain value
+
+	F.1) Deploying the aggregator contract (AccessControlledAggregator.sol). 
+
+		Here we use a flattened version of AccessControlledAggregator.sol available at
+			https://github.com/keep3rb-network/peripheri-bsc/blob/main/AccessControlledAggregator.sol
+
+
+
+		Some details on the contract compilation: 		
+
+			{
+				"name" : "AccessControlledAggregator.sol"
+				"solc" 	: "v0.6.6+commit.6c089d02"
+				"optimization"  : "Yes"
+			}
+
+		We will deploy the contract using remix, taking careful note of the constuctor
+
+			/**
+			   * @notice set up the aggregator with initial configuration
+			   * @param _link The address of the LINK token
+			   * @param _paymentAmount The amount paid of LINK paid to each oracle per submission, in wei (units of 10⁻¹⁸ LINK)
+			   * @param _timeout is the number of seconds after the previous round that are
+			   * allowed to lapse before allowing an oracle to skip an unfinished round
+			   * @param _validator is an optional contract address for validating
+			   * external validation of answers
+			   * @param _minSubmissionValue is an immutable check for a lower bound of what
+			   * submission values are accepted from an oracle
+			   * @param _maxSubmissionValue is an immutable check for an upper bound of what
+			   * submission values are accepted from an oracle
+			   * @param _decimals represents the number of decimals to offset the answer by
+			   * @param _description a short description of what is being reported
+			   */
+			  constructor(
+			    address _link,
+			    uint128 _paymentAmount,
+			    uint32 _timeout,
+			    address _validator,
+			    int256 _minSubmissionValue,
+			    int256 _maxSubmissionValue,
+			    uint8 _decimals,
+			    string memory _description
+			  ) 
+
+		A first attempt at calling the consturctor:
+
+			{
+				"_link" 		 		: "0x20fe562d797a42dcb3399062ae9546cd06f63280"
+				"_paymentAmount"	 	: "1000000000000000", 	# 0.001 LINK
+				"_timeout"  			: "10",					
+				"_validator" 			: "0x0000000000000000000000000000000000000000",
+				"_minSubmissionValue" 	: "0",				 
+				"_maxSubmissionValue"	: "100000000000000000", # 10000x our "multiply" value
+ 				"_decimals" 			: "8",
+				"_description" 			: "LINKUSD",
+			}
+
+		Contract creation transaction hash:	
+			https://ropsten.etherscan.io/tx/0xa05f1420ae1317bdb450302ef91e3dc96559ac3ab8f49585629b00b6fdd40dd7	
+			
+		Contract address: 
+			0xB554c9B25D59E5CDb8efAd452bbe8316ae5487D6	
+
+
+
+	F.2) Configuring the contract
+
+		Here is the YFI/USD flux aggregator
+			https://etherscan.io/address/0xAec0D77fdD6a2a34EC3eaF915260496Ae27f9D25
+
+		Looking at the history we find two function calls
+			> changeOracles	
+			> addAccess
+			> submit, submit, submit
+
+		In my case I had to do
+			> send LINK to contract 
+			> call updateAvailbleFunds
+			> changeOracles
+
+
+		/**
+		   * @notice called by the owner to remove and add new oracles as well as
+		   * update the round related parameters that pertain to total oracle count
+		   * @param _removed is the list of addresses for the new Oracles being removed
+		   * @param _added is the list of addresses for the new Oracles being added
+		   * @param _addedAdmins is the admin addresses for the new respective _added
+		   * list. Only this address is allowed to access the respective oracle's funds
+		   * @param _minSubmissions is the new minimum submission count for each round
+		   * @param _maxSubmissions is the new maximum submission count for each round
+		   * @param _restartDelay is the number of rounds an Oracle has to wait before
+		   * they can initiate a round
+		   */
+		  function changeOracles(
+		    address[] calldata _removed,
+		    address[] calldata _added,
+		    address[] calldata _addedAdmins,
+		    uint32 _minSubmissions,
+		    uint32 _maxSubmissions,
+		    uint32 _restartDelay
+		  )
+
+		{
+			"_removed" 			: []
+			"_added"			: ["0x0296FB97aABe4550120EE5340d38f5FA8FA05d72", "0xbBEEf2F01bD0F3Eee0944bC46Db583Cf1db6C541", "0x3Cf7c9273b5fA06eB9E7b72D5FB4f6A349e898b3"]
+			"_addedAdmins" 		: ["0x0296FB97aABe4550120EE5340d38f5FA8FA05d72", "0xbBEEf2F01bD0F3Eee0944bC46Db583Cf1db6C541", "0x3Cf7c9273b5fA06eB9E7b72D5FB4f6A349e898b3"]
+			"_minSubmissions" 	: "1"
+			"_maxSubmissions" 	: "3"
+			"_restartDelay"		: "3"
+		}	
+
+		changeOracles = setFulfillmentPermission
+
+		Function: changeOracles(address[] _removed, address[] _added, address[] _addedAdmins, uint32 _minSubmissions, uint32 _maxSubmissions, uint32 _restartDelay) ***
+
+
+
+	F.3) Creating the jobSpecs
+
+		Example JobSpecs for fluxMonitor from chainlink core repo 
+
+			chainlink/core/internal/testdata/flux_monitor_job.json
+			chainlink/core/web/testdata/flux_monitor_bridge_job.json
+			chainlink/core/web/testdata/flux_monitor_job.json
+
+	
+
+
+
+
+		https://github.com/smartcontractkit/chainlink/blob/7af775bd241a07dd6a39885d0204e82cea77b20a/core/web/testdata/flux_monitor_bridge_job.json
 
 	Understanding how the fluxmonitor works guides the workflow. In order to set up a fluxmonitor, we need to have 
 
@@ -324,3 +467,36 @@ Flux Monitor Implementation: The objective of this exercise is to create a minim
 In order to achieve this, an existing node infrastructure will be used. The first step is to update the node infrastructure to the most recent version of chainlink (v0.10.1), and to verify the functionality of the node via liveness jobs(cron) which request the ETHUSD price, and via requests through an existing consumer contract which requests the LINKUSD price through the cryptocompare external adapter. All infrastructure is depolyed on the Ropsten testnet. 
 
 Once the node is verified as functional, the existing infrastrustucture is expanded to the case of multiple nodes. For simplicity, all nodes will be deployed as separate docker containers on a single EC2 instance. 
+
+
+
+Function: changeOracles(address[] _removed, address[] _added, address[] _addedAdmins, uint32 _minSubmissions, uint32 _maxSubmissions, uint32 _restartDelay) ***
+
+MethodID: 0x3969c20f
+[0]:  00000000000000000000000000000000000000000000000000000000000000c0
+[1]:  00000000000000000000000000000000000000000000000000000000000000e0
+[2]:  0000000000000000000000000000000000000000000000000000000000000220
+[3]:  0000000000000000000000000000000000000000000000000000000000000005
+[4]:  0000000000000000000000000000000000000000000000000000000000000009
+[5]:  0000000000000000000000000000000000000000000000000000000000000003
+[6]:  0000000000000000000000000000000000000000000000000000000000000000
+[7]:  0000000000000000000000000000000000000000000000000000000000000009
+[8]:  000000000000000000000000ef53a3e5e20513a62a1b8072a689b1f8627a5145
+[9]:  000000000000000000000000ee4ed7389a1c565ce7ba4586d86d049780d2fe5d
+[10]: 000000000000000000000000cf2d187d3833dd9063b019d0c39e4566576c3c56
+[11]: 000000000000000000000000c8f53fae35468100df31901e939d8ff80b667166
+[12]: 0000000000000000000000002ad9b7b9386c2f45223ddfc4a4d81c2957bae19a
+[13]: 00000000000000000000000023c8fbd5e14a9565707d8d1a88045f2fa5648968
+[14]: 0000000000000000000000003e00b2d6d7737114c8113d9e17440b8ef6f10893
+[15]: 00000000000000000000000071e067aa68bb81600b8d5eb184a1cea91960cda3
+[16]: 00000000000000000000000039bee2f266414630fd9b543dbe9dc16d213a2ef0
+[17]: 0000000000000000000000000000000000000000000000000000000000000009
+[18]: 000000000000000000000000dd4bc51496dc93a0c47008e820e0d80745476f22
+[19]: 0000000000000000000000003b74c27115965ba74d695e3aedb615f991f3f310
+[20]: 0000000000000000000000003fb4600736d306ee2a89edf0356d4272fb095768
+[21]: 0000000000000000000000004fbefaf1bff0130945c61603b97d38dd6e21f5cf
+[22]: 00000000000000000000000015918ff7f6c44592c81d999b442956b07d26cc44
+[23]: 000000000000000000000000b45a43e998286ab3be4106b4c381f01dcce772a4
+[24]: 00000000000000000000000029fc5aacd613410b68c9c08d4e1656e3c890e482
+[25]: 0000000000000000000000003331452b9d6f76e35951f3b8c5881d5801f08612
+[26]: 000000000000000000000000dd831352762e9de7ad5a264990e1bb9f87a6fc21

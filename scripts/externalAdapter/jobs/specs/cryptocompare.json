@@ -1,0 +1,49 @@
+{
+	"initiators": [
+		{
+			"type": "runlog",
+			"params": {
+				"address": "0x5471030a14ea46a32f065ac226516723b429ec2b"
+			}
+		}
+	],
+	"tasks": [
+		{
+			"type": "cryptocompare-ea",
+			"confirmations": null,
+			"params": {
+				"endpoint": "price",
+				"fsym": "LINK",
+				"tsyms": "USD"
+			}
+		},
+		{
+			"type": "copy",
+			"confirmations": null,
+			"params": {
+				"copyPath": "USD"
+			}
+		},
+		{
+			"type": "multiply",
+			"confirmations": null,
+			"params": {
+				"times": 100000000
+			}
+		},
+		{
+			"type": "ethint256",
+			"confirmations": null,
+			"params": {
+			}
+		},
+		{
+			"type": "ethtx",
+			"confirmations": null,
+			"params": {
+			}
+		}
+	],
+	"startAt": null,
+	"endAt": null
+}

@@ -1,0 +1,38 @@
+{
+	"initiators": [
+		{
+			"type": "runlog",
+			"params": {
+				"address": "0x5471030a14ea46a32f065ac226516723b429ec2b"
+			}
+		}
+	],
+	"tasks": [
+		{
+			"type": "httppost",
+			"confirmations": null,
+			"params": {
+			}
+		},
+		{
+			"type": "jsonparse",
+			"confirmations": null,
+			"params": {
+			}
+		},
+		{
+			"type": "ethbytes32",
+			"confirmations": null,
+			"params": {
+			}
+		},
+		{
+			"type": "ethtx",
+			"confirmations": null,
+			"params": {
+			}
+		}
+	],
+	"startAt": null,
+	"endAt": null
+}
