@@ -5,6 +5,9 @@ build/
 # Logging 
 scripts/*/requests
 
+# Letter
+.letter
+
 # Security
 .config.json
 package-lock.json

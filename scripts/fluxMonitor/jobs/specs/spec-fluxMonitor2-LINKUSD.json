@@ -28,11 +28,11 @@
 			"precision": 2,
 			
 			"idleTimer": {
-				"duration": "1h"
+				"duration": "6h"
 			},
 			
 			"pollTimer": {
-				"period": "1m"
+				"period": "30m"
 			}
 		}
 	}],
