@@ -5,7 +5,7 @@
 
 		"params": {
 
-			"address"	: "0x3cCad4715152693fE3BC4460591e3D3Fbd071b42",
+			"address"	: "0x51A29dba0ccD0B28005e6214895D713bee3F3900",
 			"requestdata"	: {	
 				"data"	:{
 					"from"	: "LINK",
@@ -23,10 +23,7 @@
 			],
 			
 			"_comment": "if the relative change in the answer exceeds threshold, a new round is started",
-			"threshold": 0.5,
-			
-			"_comment": "if the absolute change in the answer exceeds absoluteThreshold, a new round is started",
-			"absoluteThreshold": 0.01,
+			"threshold": 1,
 			
 			"precision": 2,
 			

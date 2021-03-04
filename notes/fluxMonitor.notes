@@ -6,20 +6,31 @@ In order to achieve this, an existing node infrastructure will be used. The firs
 
 Once the node is verified as functional, the existing infrastrustucture is expanded to the case of multiple nodes. For simplicity, all nodes will be deployed as separate docker containers on a single EC2 instance. 
 
+Summary of steps: 
+	A) Update, review, and patch old node inrastructure 
+	B) Verify functionality of node via on-chain data requests
+	C) Decentralize data sources (add several data sources)
+	D) Decentralize node infrastructure (design network architecture)
+		- Development of chainlinkDeployer.py
+	E) Deployment of AccessControlledAggregator.sol
+		- Configure fluxmonitor jobSpecs on each node
 
-A) Update the basics: 
 
-	Update Linux AMI:
-		sudo yum update (linux AMI)
-		docker pull smartcontract/latest
-		docker pull fiews/cl-eth-failover
+A) Start old node infrastructure with updated chainlink version and patch database: 
 
-	Get new fiews API key: 	
+	Having a maintianable testnet infrastructure in AWS is valuable because cloud instillations have better liveness properties. Being able to effectively weild AWS to run a node infrastructure is a major asset. A node is a dynamic entity with a temporal component, so you need it in the cloud to catch errors which occur with low frequency. Does it really work anon? Does it really flux the price consistently? Let's see.  	
 
-B) Start the node with updated chainlink version and patch database: 
+	Update the basics and debug node infrastructure
 
-	Use existing AWS architecture 
-	Restart Postgres Database 
+		Update Linux AMI:
+			sudo yum update (linux AMI)
+			docker pull smartcontract/latest
+			docker pull fiews/cl-eth-failover
+
+		Get new fiews API key (7 day tiral):
+			3TfOIyjgfTMgoEt8cyvuynqet9cWEdDtAdej3Wum 	
+
+		Restart Postgres Database 
 
 	Note: The node is configured to report to cloudWatch logs. Errors were encountered when starting the node
 
@@ -49,7 +60,7 @@ B) Start the node with updated chainlink version and patch database:
 	}
 
 
-C) Verify consumerContract interaction via an external adapter.
+B) Verify consumerContract interaction with node via an external adapter.
 
 	Now we want to test interaction through our cryptocompare external adapter. Note that the cryptocompare external adapter has been previously deployed via AWS Lambda.
 
@@ -90,7 +101,7 @@ C) Verify consumerContract interaction via an external adapter.
 		Node v12.20.0
 
 
-D) Decentralizing of data sources
+C) Decentralizing data sources
 
 	In order to perform meaningful aggregation, it is necessary to implement multiple external adapters. In this secion, multiple external adapters are deployed in AWS in order to obtain the LINKUSD price. This is the first step towards preparing a viable node image which can be used to simulate on-chain aggregation from multiple data sources. 
 
@@ -130,11 +141,11 @@ D) Decentralizing of data sources
 	Comparing runs between adapters I noticed that, despite succeeding, <Copy> was returning "null" because the jobSpec was requesting data.USD on the returned JSON (which does not exist for those adapters). When "null" is passed, it cannot be parsed big.Float and then <Multiply> fails. In this case, the jobSpec <Copy> adapter must look for data.result for each respective job run. 
 
 
-E) Decentralizing the network 
+D) Decentralizing the network 
 
 	In this step, the objective is to generalize our node architecture to accommodate the deployment of a decentralized network of chainlink nodes (n=3). The nodes will be implemented as a single AWS EC2 instance running separate docker containers for each node.
 
-	E.1) Configuring AWS
+	D.1) Configuring AWS
 
 		 It is useful to prepare a separate environment, so first we need to backup the current node environemnt in case we break something: 
 
@@ -158,7 +169,7 @@ E) Decentralizing the network
 			e) Create a separate git-repository for the fluxMonitor work
 				- Avoid confusion when working with scripts
 			
-	E.2) Developing chainlinkDeployer	
+	D.2) Developing chainlinkDeployer	
 
 		After doing the above, we have a safe environment to work in. Next is to generalize our instance by running more than one node. The original fully-implemented and unit tested single node instance node was developed using a series of shell scripts. However, after working on the problem, it was decided to migrate the server side to python. This allows for better organization of data, greater automation, modular code, and symbolic deployment of nodes on the netowrk. 
 
@@ -193,7 +204,7 @@ E) Decentralizing the network
 						
 		The network consists of 3 fully independent nodes, looking at common EaaS provider. In this step it is important to do the port forwarding correctly and to verify the address of each node on its respective port. With some ssh tunneling, it is possible to have the GUI each node in a separate tab in the browser so we can monitor job requests. 
 
-	E.3) On-chain configuration	and testing
+	D.3) On-chain configuration	and testing
 
 		After getting the instances running and configuring the networking, the final step is to deploy oracle contracts for each node. For each node, we deploy an oracle contract (Oracle.sol), and we point the contract to our node by calling "setFulfillmentPermission(address, true)". Note we could also transferOwnership of these oracle contracts to each respective node if desired. The point is to model the idea of three fully independent node operators as accurately as possible. 
 
@@ -227,7 +238,7 @@ E) Decentralizing the network
 			https://ropsten.etherscan.io/address/0xebb230e499c1cb6883bf6996576ffe9bd4d42fac
 
 
-	E.4) Testing the nodes and deploying external adapters
+	D.4) Testing the nodes and deploying external adapters
 
 		The final step in configuring our network is to add the external adapter configured in section (D) as bridges in each node and create job runs which test the functionality of adapter. A jobSpec is prepared to query the LINKUSD price through each adapter on all three nodes. 
 
@@ -260,7 +271,7 @@ E) Decentralizing the network
 			https://ropsten.etherscan.io/address/0xb4302F5bFf79fEbe8e75a8fcB1A62C640A798271
 
 
-	E.5) Finalize this stage
+	D.5) Finalize this stage
 
 		At this stage, all pieces are in place for implementing a minimum working example of a fluxMonitor price feed. Before continuing with fluxMonitor implementation, it is useful to back up all work:
 			- Create AMI of EC2 instance 
@@ -272,14 +283,14 @@ E) Decentralizing the network
 			docker pull smartcontract/chainlink:0.10.1
 
 
-F) Running a flux monitor 
+E) Running a flux monitor 
 
 	Now that we have a node that has some working external adapters. It is possible to create a flux monitor for a given piece of price data. For this it is useful to use the following article as a basis for reference material. 
 
 		Flux Aggregator Contracts: The Technical Explanation
 				https://news.reputation.link/article/27
 
-	F.0) Understanding the deployment.
+	E.0) Understanding the deployment.
 	
 		For this we need two peices. The contract, and jobSpecs. At this point, we have deployed three nodes, and have verified the operation of the coinGecko, coinPaprika, and cryptoCompare external adapters on EACH node by making deploying an Orcale.sol for each node, and requesting data through a simple consumer contract. 
 		
@@ -299,7 +310,7 @@ F) Running a flux monitor
 				- Nodes monitor off-chain data in rounds 
 				- Nodes submit new value to fluxmonitor when contract value deviates from off chain value
 
-	F.1) Deploying the aggregator contract (AccessControlledAggregator.sol). 
+	E.1) Deploying the aggregator contract (AccessControlledAggregator.sol). 
 
 		Here we use a flattened version of AccessControlledAggregator.sol available at
 			https://github.com/keep3rb-network/peripheri-bsc/blob/main/AccessControlledAggregator.sol
@@ -371,7 +382,7 @@ F) Running a flux monitor
 			https://ropsten.etherscan.io/address/0x51a29dba0ccd0b28005e6214895d713bee3f3900#code
 
 
-	F.2) Configuring the contract
+	E.2) Configuring the contract
 
 		Here is the YFI/USD flux aggregator
 			https://etherscan.io/address/0xAec0D77fdD6a2a34EC3eaF915260496Ae27f9D25
@@ -504,91 +515,36 @@ F) Running a flux monitor
 		At this point the setup should be completely consistent with production AccessControlledAggregator.sol contracts
 
 
-	F.3) Creating the jobSpecs
+	E.3) Creating the jobSpecs and monitoring a price feed.
 
-
-
-
-		Example JobSpecs for fluxMonitor from chainlink core repo 
+		The final step is to point the chainlink nodes in our network to our newly configured aggregator contract. Example JobSpecs for fluxMonitor jobs with external adapters are available in the chainlink core repo. 
 
 			chainlink/core/internal/testdata/flux_monitor_job.json
 			chainlink/core/web/testdata/flux_monitor_bridge_job.json
 			chainlink/core/web/testdata/flux_monitor_job.json
 
+		Additional guidance on creating the jobSpec is available here:
+
+			https://news.reputation.link/article/27
+
+		Prior to adding the jobSpecs to each node, it is a good idea to test that the nodes are working properly by doing a few standard data requests through our consumer contract (externalAdapter.sol).
+
+			npx truffle exec scripts/fluxMonitor/request-externalAdapter.js --network ropsten
+
+		Note, we must add the following to chainlinkDeployer
+		
+			"FEATURE_FLUX_MONITOR"		: "true"
 	
+		Note the fluxmonitor jobIds (threshold=1):	This was far too aggessive it seems (the contract was being updated every minue. which consumes lots of test ETH). In order to get something reasonable, we can set the polling time to 1h. This will not pick up high frequency moves in the market, but it helps with the threshold issue. 
+		{
+			fluxnode0 : fe5ea2026db74cfba1a686cd9b44b764
+			fluxNode1 :	678e7863f7af43b985af7ed5112652a0
+			fluxNode2 : 6812f9807db44eb5b6d470e546b56d8f
+		}
 
+		Note that each node is configured to query a different subset (size=2) of our external adapters. This models decentralization of data, and ensures that the aggregation to an accurate single value is occurring as desinged. It is set up in the following way: 
 
-
-
-		https://github.com/smartcontractkit/chainlink/blob/7af775bd241a07dd6a39885d0204e82cea77b20a/core/web/testdata/flux_monitor_bridge_job.json
-
-	Understanding how the fluxmonitor works guides the workflow. In order to set up a fluxmonitor, we need to have 
-
-		1) multiple functional independent nodes 
-			a) nodes are to be run in concurrent docker containers on the same EC2 instance
-			b) each node needs a separate database 
-			c) each node needs a designated address 
-			d) each node needs a on-chain oracle contract
-
-		2) an AccessControlledAggregator.sol on-chain which is configured to work with our nodes. 
-
-G) Deployment strategy and Reflection: 
-
-	It has been a long time since I ran a node, and a lot of things have changed since I have really been able to sit down and take a hard look at chainlink. In the meantime, I learned Solidity well and vastly improved the the Javascript. I am a lot more comfortable with the consumer contract lifecycle and basic interaction with the node. Still, I feel that my infrastructure is ugly, and there is a lot of room for imporvement. It has gotten better though on the few short bursts I spent maintaining it this past year. I don't have to work very hard to stop and start the node now in AWS, though getting live in the cloud after months of downtime is difficult because you forget the protocol after a while. I never remember what happend in many physics projects I wrote - there was weird code in there that I am sure made perfect sense when I wrote it. After all, the physics came out right. The point is, when you lose the flow (thought process) of your project, the thought process becomeshard to get ahold of again. However, you do not forget, it comes together if you work at it. Still, there is the anxiety, I feel quite far behind on the technical details of Chainlink, but I get the overall pictre.
-
-	Keep in mind the testnet LINK, it is still valuable at the moment because the LINK faucet for Ropsten seems broken. Reduce costs to run the nodes. Let's see if we can get the flux aggregator fluxing for a long time. It would be good to flux on a consistent basis, basically to deploy a price feed that will run for a while, as long as I log in once in a while and maintain it (update the node, maybe patch the database). Soon it will be real LINK, so it is good to get in the habit of being careful. Good chainlink infrastructure is important.
-
-	Having a maintianable testnet infrastructure is valuable in AWS because it is always working. I could not imagine doing this locally. It is just so much better to deply on some infrastructure that will last. Being able to effectively wield AWS to run a node is a strong capability. I find that most of this day was patching the AWS. Fixing the adapters, running the basic node again and verifying the consumer contracts. A node is a flexible entity with a temporal component, so you need it in the cloud to catch the low frequency. Does it really work anon? Does it really flux the price consistently? Let's see.  	
-
-	Being able to deploy the adapters makes this task so much easier, because now (maybe) it is a matter of just deploying some nodes, deploying the contracts, configuring the contracts to point to the nodes, and hit go. The nodes watch the price and update the contract when what they see goes out of sync with the contract state. That is the flux idea. There is just a layer on on-chain reporting that happens in the protocol. It was good to move that off chain and just store the result (by the way), That's the benefit of off chain reporting. Just do the data consensus off chain and use the blockchain to store the answer. Of course, that is hard to make secure which is why it took so long.
-
-	Deploy the fluxMonitor contract:
-		AccessControlledAggregator.sol
-
-	Contract is available here: 
-		https://github.com/smartcontractkit/chainlink/blob/develop/evm-contracts/src/v0.6/AccessControlledAggregator.sol	
-
-	Example contract (LINKETH) is here (mainnet): 
-		https://etherscan.io/address/0x7E6C635d6A53B5033D1B0ceE84ecCeA9096859e4#code
-		 
-
-Flux Monitor Implementation: The objective of this exercise is to create a minimal working example of the chainlink network by launhing a cluster of nodes (n=3) and aggregating results of the API requests in in a flux aggregator contract. The flux monitor contract to be used is: 
-
-	AccessControlledAggregator.sol
-
-In order to achieve this, an existing node infrastructure will be used. The first step is to update the node infrastructure to the most recent version of chainlink (v0.10.1), and to verify the functionality of the node via liveness jobs(cron) which request the ETHUSD price, and via requests through an existing consumer contract which requests the LINKUSD price through the cryptocompare external adapter. All infrastructure is depolyed on the Ropsten testnet. 
-
-Once the node is verified as functional, the existing infrastrustucture is expanded to the case of multiple nodes. For simplicity, all nodes will be deployed as separate docker containers on a single EC2 instance. 
-
-
-
-Function: changeOracles(address[] _removed, address[] _added, address[] _addedAdmins, uint32 _minSubmissions, uint32 _maxSubmissions, uint32 _restartDelay) ***
-
-MethodID: 0x3969c20f
-[0]:  00000000000000000000000000000000000000000000000000000000000000c0
-[1]:  00000000000000000000000000000000000000000000000000000000000000e0
-[2]:  0000000000000000000000000000000000000000000000000000000000000220
-[3]:  0000000000000000000000000000000000000000000000000000000000000005
-[4]:  0000000000000000000000000000000000000000000000000000000000000009
-[5]:  0000000000000000000000000000000000000000000000000000000000000003
-[6]:  0000000000000000000000000000000000000000000000000000000000000000
-[7]:  0000000000000000000000000000000000000000000000000000000000000009
-[8]:  000000000000000000000000ef53a3e5e20513a62a1b8072a689b1f8627a5145
-[9]:  000000000000000000000000ee4ed7389a1c565ce7ba4586d86d049780d2fe5d
-[10]: 000000000000000000000000cf2d187d3833dd9063b019d0c39e4566576c3c56
-[11]: 000000000000000000000000c8f53fae35468100df31901e939d8ff80b667166
-[12]: 0000000000000000000000002ad9b7b9386c2f45223ddfc4a4d81c2957bae19a
-[13]: 00000000000000000000000023c8fbd5e14a9565707d8d1a88045f2fa5648968
-[14]: 0000000000000000000000003e00b2d6d7737114c8113d9e17440b8ef6f10893
-[15]: 00000000000000000000000071e067aa68bb81600b8d5eb184a1cea91960cda3
-[16]: 00000000000000000000000039bee2f266414630fd9b543dbe9dc16d213a2ef0
-[17]: 0000000000000000000000000000000000000000000000000000000000000009
-[18]: 000000000000000000000000dd4bc51496dc93a0c47008e820e0d80745476f22
-[19]: 0000000000000000000000003b74c27115965ba74d695e3aedb615f991f3f310
-[20]: 0000000000000000000000003fb4600736d306ee2a89edf0356d4272fb095768
-[21]: 0000000000000000000000004fbefaf1bff0130945c61603b97d38dd6e21f5cf
-[22]: 00000000000000000000000015918ff7f6c44592c81d999b442956b07d26cc44
-[23]: 000000000000000000000000b45a43e998286ab3be4106b4c381f01dcce772a4
-[24]: 00000000000000000000000029fc5aacd613410b68c9c08d4e1656e3c890e482
-[25]: 0000000000000000000000003331452b9d6f76e35951f3b8c5881d5801f08612
-[26]: 000000000000000000000000dd831352762e9de7ad5a264990e1bb9f87a6fc21
+			AccessControlledAggregator
+			|	fluxNode0[coinGecko, coinPaprika]  		
+			|	fluxNode1[coinPaprika, crytoCompare]	
+			|	fluxNode2[coinGecko, crytocompare] 	 	

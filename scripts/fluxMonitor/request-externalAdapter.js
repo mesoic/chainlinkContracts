@@ -21,7 +21,7 @@ const { expectRevert, time } = require('openzeppelin-test-helpers')
 try {
 
   // Load data from request object
-  const jsonString = fs.readFileSync( fs_path.resolve(__dirname, "./jobs/json/fluxNode2/fluxNode2-cryptoCompare-LINKUSD.json") )
+  const jsonString = fs.readFileSync( fs_path.resolve(__dirname, "./jobs/json/fluxNode0/fluxNode0-coinPaprika-LINKUSD.json") )
 
 
 
