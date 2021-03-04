@@ -2,5 +2,4 @@
 	"coingecko-ea" 		: https://8ohf3vjoo0.execute-api.eu-central-1.amazonaws.com/adapters/coingecko-ea
 	"coinpaprika-ea"	: https://8ohf3vjoo0.execute-api.eu-central-1.amazonaws.com/adapters/coinpaprika-ea
 	"cryptocompare-ea" 	: https://8ohf3vjoo0.execute-api.eu-central-1.amazonaws.com/adapters/cryptocompare-ea
-
 }

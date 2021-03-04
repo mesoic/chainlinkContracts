@@ -21,8 +21,10 @@ const { expectRevert, time } = require('openzeppelin-test-helpers')
 try {
 
   // Load data from request object
-  const jsonString = fs.readFileSync( fs_path.resolve(__dirname, "./jobs/oracle-cryptoCompare-LINKUSD.json") )
-  //const jsonString = fs.readFileSync( fs_path.resolve(__dirname, "./jobs/oracle-failing.json") )
+  const jsonString = fs.readFileSync( fs_path.resolve(__dirname, "./jobs/json/fluxNode2/fluxNode2-cryptoCompare-LINKUSD.json") )
+
+
+
   const config = JSON.parse(jsonString)
 
   // Note that err is the turffle error handler function which is passed as 

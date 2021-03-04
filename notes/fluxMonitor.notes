@@ -132,26 +132,151 @@ D) Decentralizing of data sources
 
 E) Decentralizing the network 
 
-	In this step, the objective is to model decentralized network of (n=3) chainlink nodes. This will be implemented as an AWS EC2 instance running three separate docker containers (chainlink instances). It is useful to prepare a separate disk image for this, so first we need to backup the current node environemnt in case we break something: 
+	In this step, the objective is to generalize our node architecture to accommodate the deployment of a decentralized network of chainlink nodes (n=3). The nodes will be implemented as a single AWS EC2 instance running separate docker containers for each node.
 
-		a) Create snapshot of RDS instance (for backup)
-			- "chainlink-ropsten-030321"
+	E.1) Configuring AWS
 
-		b) Create disk image of current setup "chainink-ropsten". 
-			- This is the root of our new AMI fork "chainlink-flux-monitor"
+		 It is useful to prepare a separate environment, so first we need to backup the current node environemnt in case we break something: 
+
+			a) Create snapshot of RDS instance (for backup)
+				- "chainlink-ropsten-030321"
+
+			b) Create disk image of current setup "chainink-ropsten". 
+				- This is the root of our new AMI fork "chainlink-flux-monitor"
+			
+			c) Create new "flux-monitor" EC2 instnce 
+				- Create new pem key for the instance (chainlink-flux-monitor.pem)
+				- Create new elasticIP and associate with instance (3.121.16.220)
+				- Add chainlink-logging-role to instance for cloud watch (Security > Modify IAM role) 
+				- Add pem key, elastic IP to local scripts for mounting remote node (ssh,sshfs)
+				- Verify the the current configuration works on the new instance image
+
+			d) Back up external adapter configurations 
+				- jobSpecs for each implemented external adapter (for unit testing)
+				- bridge configurations for each adapter 
+
+			e) Create a separate git-repository for the fluxMonitor work
+				- Avoid confusion when working with scripts
+			
+	E.2) Developing chainlinkDeployer	
+
+		After doing the above, we have a safe environment to work in. Next is to generalize our instance by running more than one node. The original fully-implemented and unit tested single node instance node was developed using a series of shell scripts. However, after working on the problem, it was decided to migrate the server side to python. This allows for better organization of data, greater automation, modular code, and symbolic deployment of nodes on the netowrk. 
+
+		Before proceeding, we need to create a new database for each node in our RDS instance.
+
+			postgres=> CREATE ROLE mesoic WITH PASSWORD 'password' CREATEDB CREATEROLE LOGIN;
+			postgres=> GRANT rds_superuser TO mesoic;
+
+		We want to clone the master user. This allows us to perform DB maniuplations and connect remotely without accidentally interacting with old configurations. Now we create some new tables. 
+
+			postgres=> create database fluxnode0;
+			postgres=> create database fluxnode1;
+			postgres=> create database fluxnode2;
+
+		Check the databases created (postgres=> \l)
+
+			fluxnode0     | mesoic       | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+			fluxnode1     | mesoic       | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+			fluxnode2     | mesoic       | UTF8     | en_US.UTF-8 | en_US.UTF-8 | 
+
+		Now we want to create a new node which points to each database. In order to do this, the node infrastructure was rewritten to facilitate quasi-automated deployment of nodes.
+
+			https://github.com/mesoic/chainlinkDeployer
+
+		The script generates of ".env" files and takes care of invoking the docker containers correctly (both on firstrun, and on ordinary run). After developing chainlinkDeployer, is is straightforward to generate a network of chainlink nodes as shown in "run-fluxmonitor.py": 
+
+			CONTAINER ID        IMAGE                     COMMAND                  CREATED             STATUS              PORTS                    NAMES
+			3df22d101a67        smartcontract/chainlink   "chainlink local node"   14 minutes ago      Up 12 minutes       0.0.0.0:6688->6688/tcp   fluxNode2
+			4c66bfea8393        smartcontract/chainlink   "chainlink local node"   14 minutes ago      Up 14 minutes       0.0.0.0:6687->6688/tcp   fluxNode1
+			b41e47082193        smartcontract/chainlink   "chainlink local node"   15 minutes ago      Up 14 minutes       0.0.0.0:6686->6688/tcp   fluxNode0
+			c629898694bb        fiews/cl-eth-failover     "node index.js wss:/���"   15 minutes ago      Up 15 minutes       0.0.0.0:4000->4000/tcp   eaas-failover
+						
+		The network consists of 3 fully independent nodes, looking at common EaaS provider. In this step it is important to do the port forwarding correctly and to verify the address of each node on its respective port. With some ssh tunneling, it is possible to have the GUI each node in a separate tab in the browser so we can monitor job requests. 
+
+	E.3) On-chain configuration	and testing
+
+		After getting the instances running and configuring the networking, the final step is to deploy oracle contracts for each node. For each node, we deploy an oracle contract (Oracle.sol), and we point the contract to our node by calling "setFulfillmentPermission(address, true)". Note we could also transferOwnership of these oracle contracts to each respective node if desired. The point is to model the idea of three fully independent node operators as accurately as possible. 
+
+		Using remix, we deploy three copies of Oracle.sol, and run setFulfillmentPermission(_address, true) on each contrct. After doing the transactions, we can confirm permissions have been set via getAuthorizationStatus(_address). 
+
+			{ 
+				"fluxNode0" : { 
+					"_address"	: "0x0296FB97aABe4550120EE5340d38f5FA8FA05d72",
+					"_oracle"	: "0x9467b20a09122741c93d59808752f2e5559051cc"
+				},
+			
+				"fluxNode1" : { 
+					"_address"	: "0xbBEEf2F01bD0F3Eee0944bC46Db583Cf1db6C541",
+					"_oracle"	: "0x3a5c66eb85290ad6b1a76baf30bc51805f3d2ab8"
+				},
+
+				"fluxNode2" : { 
+					"_address"	: "0x3Cf7c9273b5fA06eB9E7b72D5FB4f6A349e898b3",
+					"_oracle"	: "0x88d18c7436e21ffe862a73283e21e88676de197b"
+				}
+			}
+
+		The final step is to add these oracle contract adresses to our configruation files in the chainlinkDeployer framework and restart the nodes. The oracle contract addresses should now be configured in the GUI.
+
+			[ec2-user@ip-172-31-45-177 scripts]$ python stop-fluxmonitor.py
+			[ec2-user@ip-172-31-45-177 scripts]$ python generate-env.py
+			[ec2-user@ip-172-31-45-177 scripts]$ python start-fluxmonitor.py
+
+		Additionally, it is necessary to fund the each node with some Ropsten ETH prior to testing external adapters. Note the on-chain steps can be seen at the following address:
+
+			https://ropsten.etherscan.io/address/0xebb230e499c1cb6883bf6996576ffe9bd4d42fac
+
+
+	E.4) Testing the nodes and deploying external adapters
+
+		The final step in configuring our network is to add the external adapter configured in section (D) as bridges in each node and create job runs which test the functionality of adapter. A jobSpec is prepared to query the LINKUSD price through each adapter on all three nodes. 
+
+			fluxNode0 : {
+				coingecko-ea 		: 4c9502879677459681c32698add72105
+				coinpaprika-ea 		: 8f3bc4026c364ba6987889dc7e3fd2a4
+				cryptocompare-ea 	: ae5790c791964219a2a37bba62bdb884
+			} 
+
+			fluxNode1 : {
+				coingecko-ea 		: bf9df7ccca874ec9926ef2b9726bff68
+				coinpaprika-ea 		: f8cd7b2a32b0456dac623a610a15232e
+				cryptocompare-ea 	: ff097e6713264beeb20d9ae5357b213b
+			}
+
+
+			fluxNode2 : {
+				coingecko-ea 		: 86d054f982ca4b8ebac6dc65ecb1edc3
+				coinpaprika-ea 		: 4c044f15f0af4322925c3800aa401ff8 
+				cryptocompare-ea 	: d4f303ea587d4c338e1dd616ad32cda0
+			}
+
+			Note the following (occasinal) error on Ropsten
+				TxHash 0x08ebc94f93eb54e42fb882927b4d711019f8918da705ab3e3f625c513872beda initiating 
+				run ee038abf23b3446a84316d7b0b5c7828 not on main chain; presumably has been uncled
+			
+		Testing complete: 3(3) extenral adapters verified operational on 3(3) nodes.  
+
+		All tests performed on consumer contract deployed at:	
+			https://ropsten.etherscan.io/address/0xb4302F5bFf79fEbe8e75a8fcB1A62C640A798271
+
+
+	E.5) Finalize this stage
+
+		At this stage, all pieces are in place for implementing a minimum working example of a fluxMonitor price feed. Before continuing with fluxMonitor implementation, it is useful to back up all work:
+			- Create AMI of EC2 instance 
+			- Create Snapshot of RDS database
+			- Push updated repositories to git
+				
 		
-		c) Create new "flux-monitor" EC2 instnce 
-			- Create new pem key for the instance
-			- Create new elasticIP and associate with instance
-			- Add instance to chainlink-reporting group (cloud watch)
-			- Verify the the current configuration works on the new node
-			- Add pem key, elastic IP to local scripts for mounting remote node (ssh,sshfs)
 
-		d) Back up external adapter configurations 
-			- jobSpecs for each implemented external adapter (for unit testing)
-			- bridge configurations for each adapter 
-		
-	After doing the above, we have a safe environment to work in. Next is to generalize our instance by running more than one node. The original fully-implemented and unit tested single node instance node will be left running as a reference.
+
+
+
+
+
+
+
+
 
 
 
