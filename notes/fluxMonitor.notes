@@ -535,6 +535,10 @@ E) Running a flux monitor
 		Note, we must add the following to chainlinkDeployer
 		
 			"FEATURE_FLUX_MONITOR"		: "true"
+
+		Also consider to lower the default gas price for Ropsten (2wei)
+		
+			"ETH_GAS_PRICE_DEFAULT"		: "2000000000"	
 	
 		Note the fluxmonitor jobIds (threshold=1):	This was far too aggessive it seems (the on-chain state was being updated every minute). which consumes lots of test ETH). In order to get something reasonable, we can set the polling time to 1h. This will not pick up high frequency moves in the market, but it helps with the threshold issue. 
 		{
