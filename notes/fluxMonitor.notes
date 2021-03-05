@@ -236,6 +236,9 @@ D) Decentralizing the network
 			https://ropsten.etherscan.io/address/0xebb230e499c1cb6883bf6996576ffe9bd4d42fac
 
 
+		Note that Ropsten ETH is available here with good reliability	
+			https://faucet.dimensions.network/	
+
 	D.4) Testing the nodes and deploying external adapters
 
 		The final step in configuring our network is to add the external adapter configured in section (D) as bridges in each node and create job runs which test the functionality of adapter. A jobSpec is prepared to query the LINKUSD price through each adapter on all three nodes. 
@@ -515,7 +518,7 @@ E) Running a flux monitor
 
 	E.3) Creating the jobSpecs and monitoring a price feed.
 
-		The final step is to point the chainlink nodes in our network to our newly configured aggregator contract. Example JobSpecs for fluxMonitor jobs with external adapters are available in the chainlink core repo. 
+		The final step is to point the chainlink nodes in our network to our newly configured aggregator contract. Example JobSpecs for fluxMonitor jobs with external adapters are available in the chainlink core repo. fluxMonitor jobs are analogous to cron insofar as the node initiates interaction with a contract on it's own behalf. 
 
 			chainlink/core/internal/testdata/flux_monitor_job.json
 			chainlink/core/web/testdata/flux_monitor_bridge_job.json
@@ -535,9 +538,9 @@ E) Running a flux monitor
 	
 		Note the fluxmonitor jobIds (threshold=1):	This was far too aggessive it seems (the on-chain state was being updated every minute). which consumes lots of test ETH). In order to get something reasonable, we can set the polling time to 1h. This will not pick up high frequency moves in the market, but it helps with the threshold issue. 
 		{
-			fluxnode0 : ee0839a699544bd0af3582200a4efd9a
-			fluxNode1 :	4dd865c135e84ccd98418d87bb6c004e
-			fluxNode2 : d414d9d86b8240628c6d1062fa1c87dd
+			fluxnode0 : 2ddf1fc311bb49e398dd05e440643805
+			fluxNode1 :	04c186437e3e4a71b5e3ed268bbab676
+			fluxNode2 : 1cddcba830e6445c85a1bdf44f3723ff
 		}
 
 		Note that each node is configured to query a different subset (size=2) of our external adapters. This models decentralization of data, and ensures that the aggregation to an accurate single value is occurring as designed. It is set up in the following way: 
@@ -547,3 +550,7 @@ E) Running a flux monitor
 			|	fluxNode1[coinPaprika, crytoCompare]	
 			|	fluxNode2[coinGecko, crytocompare] 	 	
 
+
+F) Final comment
+
+	The implementation of a fluxmonitor and aggregator contracts represents a minimum viable decentralized oracle network. Within the generalization to multiple nodes and multiple data sources, all basic of the chainlink network are present. 	
